@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1057272588600",
+    "firebase_url": "https://touropia-7c152.firebaseio.com",
+    "project_id": "touropia-7c152",
+    "storage_bucket": "touropia-7c152.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057272588600:android:5d6a92de3f3bb194",
+        "android_client_info": {
+          "package_name": "iti.mobile.touropia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057272588600-2ihd9nh090hlrha18n70bnef2damoq57.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "iti.mobile.touropia",
+            "certificate_hash": "f6410e9f218c7d24c842e48d8932e80269be62f3"
+          }
+        },
+        {
+          "client_id": "1057272588600-4gftvfa2foh7a44oh4r6ihhsd3n50ia2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-YsLEIyD3e_7W6x28WN8n0I1-gUGM6Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057272588600-4gftvfa2foh7a44oh4r6ihhsd3n50ia2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
