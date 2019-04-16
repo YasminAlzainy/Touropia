@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Touropia</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps2">Map</string>
     <!-- Aya-->
     <string name="From">From :</string>
     <string name="To">To :</string>
@@ -11,6 +13,9 @@
 
 
     <!-- Gomaa-->
+
+
+    <!-- Yasmin-->
 
 
 </resources>

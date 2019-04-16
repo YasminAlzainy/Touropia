@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import iti.mobile.touropia.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +29,26 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView.Adapter upcommingTripsAdapter;
     private FloatingActionButton floatingActionButton;
     private BottomNavigationView bottomNavigationView;
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         upcommingTripsRecyclerView =findViewById(R.id.upcommingTripList);
         bottomNavigationView=findViewById(R.id.navigation);
