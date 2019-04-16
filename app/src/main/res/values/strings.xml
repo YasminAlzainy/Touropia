@@ -13,6 +13,13 @@
 
 
     <!-- Gomaa-->
+    <string-array name="Repeated" >
+        <item>No Repeat</item>
+        <item>Repeat Daily</item>
+        <item>Repeat Weekly</item>
+        <item>Repeat Monthly</item>
+        <item>Custom period</item>
+    </string-array>
 
 
     <!-- Yasmin-->
