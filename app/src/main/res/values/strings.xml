@@ -1,10 +1,30 @@
 <resources>
     <string name="app_name">Touropia</string>
+    <string name="title_activity_maps">Map</string>
     <string name="title_activity_search_places">Map</string>
+
     <!-- Aya-->
+    <string name="From">From :</string>
+    <string name="To">To :</string>
+    <string name="TripMenu">:</string>
+    <string name="UpcommingTrips">Upcomming Trips</string>
+    <string name="HistoryTrips">History Trips</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_history">History</string>
 
 
     <!-- Gomaa-->
+    <string-array name="Repeated" >
+        <item>No Repeat</item>
+        <item>Repeat Daily</item>
+        <item>Repeat Weekly</item>
+        <item>Repeat Monthly</item>
+        <item>Custom period</item>
+    </string-array>
+
+
+    <!-- Yasmin-->
+
     <string-array name="Repeated" >
         <item>No Repeat</item>
         <item>Repeat Daily</item>
