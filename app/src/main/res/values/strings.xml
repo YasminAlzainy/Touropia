@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Touropia</string>
     <!-- Aya-->
+    <string name="From">From :</string>
+    <string name="To">To :</string>
+    <string name="TripMenu">:</string>
+    <string name="UpcommingTrips">Upcomming Trips</string>
+    <string name="HistoryTrips">History Trips</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_history">History</string>
 
 </resources>
