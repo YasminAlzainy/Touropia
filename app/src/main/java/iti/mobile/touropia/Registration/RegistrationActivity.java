@@ -14,8 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //import iti.mobile.touropia.AddTrip.AddTrip;
-import iti.mobile.touropia.MainActivity;
+//import iti.mobile.touropia.MainActivity;
 import iti.mobile.touropia.R;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -47,10 +48,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 public void onComplete(Task<AuthResult> task) {
                     if (task.isSuccessful()) {
 
-//                        Intent intent = new Intent(RegistrationActivity.this, AddTrip.class);
-                        //                      startActivity(intent);
+                        Intent intent = new Intent(RegistrationActivity.this, AddTrip.class);
+                                              startActivity(intent);
 
                         Toast.makeText(RegistrationActivity.this, "Registeration done", Toast.LENGTH_SHORT).show();
+
 
                     } else
                         Toast.makeText(RegistrationActivity.this, "Registeration Failed", Toast.LENGTH_SHORT).show();
