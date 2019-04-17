@@ -12,7 +12,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_history">History</string>
 
-
     <!-- Gomaa-->
     <string-array name="Repeated" >
         <item>No Repeat</item>
