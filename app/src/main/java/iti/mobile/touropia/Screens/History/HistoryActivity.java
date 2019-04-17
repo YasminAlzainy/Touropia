@@ -1,5 +1,6 @@
 package iti.mobile.touropia.Screens.History;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Model.Network.TripData;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -19,17 +21,28 @@ public class HistoryActivity extends AppCompatActivity {
     private RecyclerView historyTripsRecyclerView;
     private RecyclerView.Adapter historyTripsAdapter;
     private FloatingActionButton floatingActionButton;
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        userId=bundle.getString("userId");
         historyTripsRecyclerView =findViewById(R.id.historyTripList);
         floatingActionButton = findViewById(R.id.floatingActionButn);
+
         ((View) floatingActionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //action that floating button do
-                Toast.makeText(HistoryActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
+                //action that floating button do
+                Intent intent=new Intent(getApplicationContext(), AddTrip.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("userId",userId);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                // Toast.makeText(HistoryActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
             }
         });
         historyTripsRecyclerView.setHasFixedSize(true);

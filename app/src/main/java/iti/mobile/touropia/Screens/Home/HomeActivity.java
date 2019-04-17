@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iti.mobile.touropia.Model.Network.TripData;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.History.HistoryActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,14 +33,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        userId=bundle.getString("userId");
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -57,7 +61,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //action that floating button do
-                Toast.makeText(HomeActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getApplicationContext(), AddTrip.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("userId",userId);
+                intent.putExtras(bundle);
+                startActivity(intent);
+             //   Toast.makeText(HomeActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
             }
         });
         upcommingTripsRecyclerView.setHasFixedSize(true);
