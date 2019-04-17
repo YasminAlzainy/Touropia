@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1057272588600-2ihd9nh090hlrha18n70bnef2damoq57.apps.googleusercontent.com",
+          "client_id": "1057272588600-jpug531avjs6q9tg97bpn5c62r29n82p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "iti.mobile.touropia",
-            "certificate_hash": "f6410e9f218c7d24c842e48d8932e80269be62f3"
+            "certificate_hash": "92fb306079deb4f0bd0051b4755018f2bbbb653a"
           }
         },
         {
@@ -29,7 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB-YsLEIyD3e_7W6x28WN8n0I1-gUGM6Mw"
+          "current_key": "AIzaSyCU-3MI6BVOKp8OOFxApM1J-A-32KkciLs"
         }
       ],
       "services": {

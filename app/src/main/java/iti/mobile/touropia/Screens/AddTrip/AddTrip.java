@@ -107,12 +107,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
 
-                if (place != null) {
-                    tripDTO.setTrip_start_point(place.getName());
-                    tripDTO.setlatLangFrom(place.getLatLng());
-                } else {
-                    Toast.makeText(AddTrip.this, "Pleae Select Start Point", Toast.LENGTH_SHORT).show();
-                }
+
+                tripDTO.setTrip_start_point(place.getName());
+                tripDTO.setlatLangFrom(place.getLatLng());
+
             }
 
             @Override
@@ -137,12 +135,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 //Toast.makeText(AddTrip.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
 
 
-                if (place != null) {
-                    tripDTO.setTrip_end_point(place.getName());
-                    tripDTO.setlatLangTo(place.getLatLng());
-                } else {
-                    Toast.makeText(AddTrip.this, "Pleae Select Destination Point", Toast.LENGTH_SHORT).show();
-                }
+                tripDTO.setTrip_end_point(place.getName());
+                tripDTO.setlatLangTo(place.getLatLng());
+
             }
 
             @Override
@@ -220,32 +215,41 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
     public void addTrip(View view) {
 
-        if (tripName.getText().toString().length() > 0) {
 
-            tripDTO.setTrip_name(tripName.getText().toString());
+        if (ValidateData()) {
+
+            String id = mDatabase.push().getKey();
+            FirebaseDatabase database = FirebaseConnection.getConnection();
+            mDatabase = database.getReference("trips").child(userId);
+
+            mDatabase.child(id).setValue(tripDTO);
+            Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+
+
+            tripName.setText("");
+            trip_note.setText("");
+
         } else {
-            Toast.makeText(this, "Please Enter Trip Name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
         }
-
-
-        tripDTO.setTrip_note(trip_note.getText().toString());
-        tripDTO.setTrip_status(true);
-
-        String id = mDatabase.push().getKey();
-        FirebaseDatabase database = FirebaseConnection.getConnection();
-        mDatabase = database.getReference("trips").child(userId);
-
-        mDatabase.child(id).setValue(tripDTO);
-        Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
-
-
-        tripName.setText("");
-        trip_note.setText("");
 
 
     }
 
-    private void ValidateData() {
+    private boolean ValidateData() {
+        tripDTO.setTrip_name(tripName.getText().toString());
+        tripDTO.setTrip_note(trip_note.getText().toString());
+        tripDTO.setTrip_status(true);
+
+        boolean validate;
+
+        if (tripDTO.getTrip_name().length() > 0 && tripDTO.getTrip_time().length() > 0 && tripDTO.getTrip_date().length() > 0
+                && tripDTO.getTrip_time().length() > 0 && tripDTO.getTrip_start_point().length() > 0 && tripDTO.getTrip_end_point().length() > 0) {
+            validate = true;
+        } else {
+            validate = false;
+        }
+        return validate;
 
 
     }

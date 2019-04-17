@@ -1,6 +1,8 @@
 package iti.mobile.touropia.Login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +25,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-//import iti.mobile.touropia.AddTrip.AddTrip;
-import iti.mobile.touropia.MainActivity;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Registration.RegistrationActivity;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
+import iti.mobile.touropia.Screens.Home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    //  LoginPresenter presenter;
     EditText userName;
     EditText password;
     private GoogleSignInClient mGoogleSignInClient;
@@ -38,17 +39,25 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 0;
     SignInButton signInButton;
     FirebaseUser currentUser;
-    //    private CallbackManager mCallbackManager;
     private FirebaseAuth firebaseAuth;
-
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     String user_name;
     String user_password;
+    boolean isFirst;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+        isFirst = sharedPreferences.getBoolean("firstTime", true);
+//Shared Peference
+     /*   if (!isFirst) {
+
+        }*/
         firebaseAuth = FirebaseAuth.getInstance();
         userName = findViewById(R.id.edtUserName);
         password = findViewById(R.id.edtPassword);
@@ -96,6 +105,11 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             //noteActivity();
                             Toast.makeText(LoginActivity.this, "signInWithCredential:success", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, AddTrip.class);
+                            startActivity(intent);
+                            editor.putBoolean("firstTime", false);
+                            editor.commit();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -126,12 +140,14 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                //Intent intent = new Intent(LoginActivity.this, AddTrip.class);
-                                Bundle bundle=new Bundle();
-                                bundle.putString("userId",firebaseAuth.getCurrentUser().getUid());
-                                //intent.putExtras(bundle);
-                                //startActivity(intent);
-                                Toast.makeText(LoginActivity.this, "Authentication done", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, AddTrip.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                                // Toast.makeText(LoginActivity.this, "Authentication done", Toast.LENGTH_SHORT).show();
+                               // editor.putBoolean("firstTime", false);
+                                //editor.commit();
 
                             } else {
                                 Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();

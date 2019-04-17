@@ -28,11 +28,7 @@ public class SearchPlaces extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_places);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        /*        mapFragment.getMapAsync(this);
-         */
-        // Initialize Places.
+        // setContentView(R.layout.activity_search_places);
         Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
 
 // Create a new Places client instance.
@@ -56,8 +52,8 @@ public class SearchPlaces extends FragmentActivity implements OnMapReadyCallback
                 Log.e(TAG, "Place: " + place.getName() + ", " + place.getId());
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName()).snippet(place.getAddress()));
-                Log.e(TAG, "onPlaceSelected: "+place.getAddress() );
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(    place.getLatLng(),12));
+                Log.e(TAG, "onPlaceSelected: " + place.getAddress());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
             }
 
             @Override
@@ -93,14 +89,14 @@ public class SearchPlaces extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+   /*     LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        UiSettings uiSettings=mMap.getUiSettings();
+        UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setAllGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
         uiSettings.setMapToolbarEnabled(true);
-    }
+   */ }
 }
