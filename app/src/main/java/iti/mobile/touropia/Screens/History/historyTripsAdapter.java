@@ -1,6 +1,7 @@
 package iti.mobile.touropia.Screens.History;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import iti.mobile.touropia.NotesActivity;
 import iti.mobile.touropia.R;
 
 
@@ -21,8 +24,8 @@ import java.util.List;
 import iti.mobile.touropia.Model.Network.TripData;
 
 public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapter.MyViewHolder>{
-    private List<TripData> tripList;
-    private Context context;
+    protected List<TripData> tripList;
+    protected Context context;
 
     public historyTripsAdapter(List<TripData> historyTripList, Context applicationContext) {
         context=applicationContext;
@@ -55,15 +58,17 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
     }
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView tripNameTextView;
-        public TextView tripDateTextView;
-        public TextView tripSourceTextView;
-        public TextView tripTimeTextView;
-        public TextView tripDestinationTextView;
-        public ImageView tripImageView;
-        public Button tripMenuButton;
-        public MyViewHolder(final View view) {
+        private TextView tripNameTextView;
+        private TextView tripDateTextView;
+        private TextView tripSourceTextView;
+        private TextView tripTimeTextView;
+        private TextView tripDestinationTextView;
+        private ImageView tripImageView;
+        private Button tripMenuButton;
+        private Context context;
+        private MyViewHolder(final View view) {
             super(view);
+            context=view.getContext();
             tripNameTextView = view.findViewById(R.id.tripName);
             tripSourceTextView = view.findViewById(R.id.goFrom);
             tripDestinationTextView = view.findViewById(R.id.goTo);
@@ -80,11 +85,17 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()){
+                            switch (menuItem.getItemId()) {
                                 case R.id.notes:
-                                    Toast.makeText(tripMenuButton.getContext(), "Notes", Toast.LENGTH_SHORT).show();
-                                    return true;
+                                    Toast.makeText(context, "Notes", Toast.LENGTH_SHORT).show();
+                                     Intent intent=new Intent( context, NotesActivity.class);
+                                     intent.putExtra("Notes","hello from Notes");
+                                     context.startActivity(intent);
 
+                                     return true;
+                                case R.id.Delete:
+                                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+                                    return  true;
                                 default:
                                     return false;
                             }
