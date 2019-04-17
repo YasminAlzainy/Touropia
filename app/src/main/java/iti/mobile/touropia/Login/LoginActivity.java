@@ -28,6 +28,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Registration.RegistrationActivity;
 import iti.mobile.touropia.Screens.AddTrip.AddTrip;
+import iti.mobile.touropia.Screens.Home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText userName;
@@ -139,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(LoginActivity.this, AddTrip.class);
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
                                 intent.putExtras(bundle);
