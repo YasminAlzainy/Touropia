@@ -28,7 +28,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Registration.RegistrationActivity;
 import iti.mobile.touropia.Screens.AddTrip.AddTrip;
-import iti.mobile.touropia.Screens.Home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText userName;
@@ -146,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtras(bundle);
                                 startActivity(intent);
                                 // Toast.makeText(LoginActivity.this, "Authentication done", Toast.LENGTH_SHORT).show();
-                               // editor.putBoolean("firstTime", false);
+                                // editor.putBoolean("firstTime", false);
                                 //editor.commit();
 
                             } else {
