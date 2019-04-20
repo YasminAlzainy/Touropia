@@ -45,6 +45,7 @@ public class GetUpcommingTrips {
 
                 //clear adapter
                 upcommingTripList.clear();
+                upcommingKeys.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
