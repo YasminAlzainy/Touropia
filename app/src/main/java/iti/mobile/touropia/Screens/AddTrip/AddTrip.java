@@ -40,6 +40,7 @@ import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
+import maes.tech.intentanim.CustomIntent;
 
 public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -351,9 +352,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 mDatabase.child(id + 1).setValue(tripDTOBack);
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 
-
-                tripName.setText("");
-                trip_note.setText("");
+                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                startActivity(intent);
+                CustomIntent.customType(this, "right-to-left");
 
             } else {
                 Toast.makeText(this, "enter round method", Toast.LENGTH_SHORT).show();
@@ -366,13 +367,11 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 String id = mDatabase.push().getKey();
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
-
                 mDatabase.child(id).setValue(tripDTO);
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
-                tripName.setText("");
-                trip_note.setText("");
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
                 startActivity(intent);
+                CustomIntent.customType(this, "right-to-left");
 
             } else {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
