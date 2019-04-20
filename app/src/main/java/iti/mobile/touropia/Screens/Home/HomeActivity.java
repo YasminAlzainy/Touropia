@@ -45,7 +45,21 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
-                Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                if( menuItem.getItemId() == R.id.nav_history)
+                {
+                    Intent intent = new Intent(HomeActivity.this , HistoryActivity.class);
+                    startActivity(intent);
+                }
+                else if ( menuItem.getItemId() == R.id.nav_home)
+                {
+                    Intent intent = new Intent(HomeActivity.this , HomeActivity.class);
+                    startActivity(intent);
+                }
+                else if ( menuItem.getItemId() == R.id.nav_logout)
+                {
+                    Toast.makeText(HomeActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             }
         });

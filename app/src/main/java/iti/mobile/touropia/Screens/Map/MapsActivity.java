@@ -2,108 +2,105 @@ package iti.mobile.touropia.Screens.Map;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.List;
 
 import iti.mobile.touropia.R;
 
+import com.google.maps.android.PolyUtil;
+//import com.google.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLng;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
-    private static final String TAG = "MapsActivity";
+    private static final String LNG = "LNG";
+    private static final String LAT = "LAT";
     private GoogleMap mMap;
+    private double location_lat, location_lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        /*        mapFragment.getMapAsync(this);
-         */
-        // Initialize Places.
-        Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
 
-// Create a new Places client instance.
+        Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-// Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME , Place.Field.LAT_LNG));
-
-// Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.e(TAG, "Place: " + place.getName() + ", " + place.getId());
-                //mMap.clear();
-                //mMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName()).snippet(place.getAddress()));
-                Log.e(TAG, "onPlaceSelected: "+place.getAddress() );
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(    place.getLatLng(),12));
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.e(TAG, "An error occurred: " + status);
-            }
-        });
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    /*@Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    private void setLat_Lng() {
+        location_lat = getIntent().getDoubleExtra(LAT, 31.0413814);
+        location_lng = getIntent().getDoubleExtra(LNG, 31.3478199);
     }
-    */
+
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext.Builder()
+                .apiKey(getResources().
+                        getString(R.string.google_maps_key)).build();
+        return geoApiContext;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        setLat_Lng();
 
-        // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng startlatLng = new LatLng(location_lat, location_lng);
+        LatLng endlatLng = new LatLng(30.0711192, 31.0185634);
 
-        UiSettings uiSettings=mMap.getUiSettings();
-        uiSettings.setMyLocationButtonEnabled(true);
-        uiSettings.setAllGesturesEnabled(true);
-        uiSettings.setCompassEnabled(true);
-        uiSettings.setMapToolbarEnabled(true);*/
+        //googleMap.addPolyline( new PolylineOptions().add(startlatLng , endlatLng).width(5));
+
+        markePoints(startlatLng, endlatLng);
+        drawRoute(startlatLng, endlatLng);
     }
+
+    private void markePoints(LatLng startlatLng, LatLng endlatLng) {
+        mMap.addMarker(new MarkerOptions().position(startlatLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startlatLng, 12.0f));
+        mMap.addMarker(new MarkerOptions().position(endlatLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endlatLng, 12.0f));
+    }
+
+
+    private void drawRoute(LatLng startlatLng, LatLng endlatLng) {
+        DirectionsResult result = null;
+        com.google.maps.model.LatLng start = new com.google.maps.model.LatLng(startlatLng.latitude, startlatLng.longitude);
+        com.google.maps.model.LatLng end = new com.google.maps.model.LatLng(endlatLng.latitude, endlatLng.longitude);
+
+        try {
+            result = DirectionsApi.newRequest(getGeoContext()).mode(
+                    TravelMode.DRIVING).origin(start) //31.0413814,31.3478199)
+                    .destination(end).await(); //30.0711192,31.0185634
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<LatLng> decodePath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
+        mMap.addPolyline(new PolylineOptions().addAll(decodePath));
+    }
+
+
 }

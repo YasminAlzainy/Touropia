@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //import iti.mobile.touropia.AddTrip.AddTrip;
-import iti.mobile.touropia.MainActivity;
 import iti.mobile.touropia.R;
 
 public class RegistrationActivity extends AppCompatActivity {

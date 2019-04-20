@@ -24,13 +24,10 @@
 
 
     <!-- Yasmin-->
+    <string name="histroy">History</string>
+    <string name="home" >Home</string>
+    <string name="sync" >Sync</string>
+    <string name="logout">Logout</string>
 
-    <string-array name="Repeated" >
-        <item>No Repeat</item>
-        <item>Repeat Daily</item>
-        <item>Repeat Weekly</item>
-        <item>Repeat Monthly</item>
-        <item>Custom period</item>
-    </string-array>
 
 </resources>

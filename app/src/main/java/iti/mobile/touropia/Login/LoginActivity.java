@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 //import iti.mobile.touropia.AddTrip.AddTrip;
-import iti.mobile.touropia.MainActivity;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Registration.RegistrationActivity;
 
