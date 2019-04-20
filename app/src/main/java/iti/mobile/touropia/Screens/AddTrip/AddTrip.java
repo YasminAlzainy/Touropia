@@ -39,6 +39,7 @@ import iti.mobile.touropia.Model.Network.FirebaseConnection;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Model.Network.LatLng;
+import iti.mobile.touropia.Screens.Home.HomeActivity;
 
 public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -368,10 +369,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
                 mDatabase.child(id).setValue(tripDTO);
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
-
-
                 tripName.setText("");
                 trip_note.setText("");
+                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                startActivity(intent);
 
             } else {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
