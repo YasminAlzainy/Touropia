@@ -223,7 +223,7 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
 
     private boolean ValidateData() {
         tripDTO.setTrip_name(tripName.getText().toString());
-        tripDTO.setTrip_note(trip_note.getText().toString());
+       // tripDTO.setTrip_note(trip_note.getText().toString());
         tripDTO.setTrip_status(true);
 
         boolean validate;

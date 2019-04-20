@@ -62,7 +62,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
         holder.tripSourceTextView.setText( trip.getTrip_start_point());
         holder.presenter=this.presenter;
         holder.Position=position;
-        holder.Notes=trip.getTrip_note();
+      //  holder.Notes=trip.getTrip_note();
         holder.source=trip.getLatLangFrom();
         holder.Destination=trip.getlatLangTo();
         holder.trip=trip;
@@ -138,7 +138,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                     Intent EditIntent=new Intent( context, EditTripActivity.class);
                                     EditIntent.putExtra("Position",Position);
                                     EditIntent.putExtra("Preseneter", (Parcelable) presenter);
-                                    EditIntent.putExtra("Trip",trip);
+                                   // EditIntent.putExtra("Trip",trip);
                                     context.startActivity(EditIntent);
                                     //Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
 

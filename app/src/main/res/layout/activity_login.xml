@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/quantum_yellowA100"
     tools:context=".Login.LoginActivity">
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="TOUROPIA\nLogin"
-            android:textColor="@color/white"
-            android:textSize="45dp"
-            android:textStyle="italic" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="TOUROPIA\nLogin"
+        android:textColor="@color/black"
+        android:textSize="45dp"
+        android:textStyle="italic" />
 
 
     <RelativeLayout
@@ -27,16 +27,14 @@
         android:layout_marginTop="350px"
         android:layout_marginRight="30dp">
 
-        <!-- android:background="@color/com_facebook_blue"
-            -->
         <ImageView
             android:id="@+id/imageView_userIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:background="@color/icons"
             android:padding="8dp"
             android:src="@drawable/img_user"
             android:tint="@color/white" />
-
 
         <EditText
             android:id="@+id/edtUserName"
@@ -62,12 +60,12 @@
         android:layout_marginTop="52dp"
         android:layout_marginRight="30dp">
 
-        <!--android:background="@color/com_facebook_blue"-->
         <ImageView
 
             android:id="@+id/imageView_passwordIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:background="@color/icons"
             android:padding="8dp"
             android:src="@drawable/img_authentication"
             android:tint="@color/white" />
@@ -103,18 +101,18 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:background="@drawable/background_circle_button"
+            android:background="@color/icons"
             android:onClick="checklogin"
-            android:textColor="@color/white"
             android:text="Login"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/layoutbuttons"
             android:layout_weight="1"
-            android:background="@drawable/background_circle_button"
+            android:background="@color/icons"
             android:onClick="registeruser"
             android:text="Register here"
             android:textAllCaps="false"
@@ -128,8 +126,8 @@
         android:layout_below="@+id/layoutbuttons"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="200px"
-        android:layout_marginBottom="200px"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="200px"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -139,6 +137,5 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5px" />
     </LinearLayout>
-
 
 </RelativeLayout>

@@ -57,7 +57,7 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
         holder.tripTimeTextView.setText( trip.getTrip_time());
         holder.tripDestinationTextView.setText(trip.getTrip_end_point());
         holder.tripSourceTextView.setText(trip.getTrip_start_point());
-        holder.Notes=trip.getTrip_note();
+      //  holder.Notes=trip.getTrip_note();
         holder.presenter=presenter;
         holder.Position=position;
     }

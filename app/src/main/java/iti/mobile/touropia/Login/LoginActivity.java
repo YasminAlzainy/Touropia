@@ -54,14 +54,21 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         isFirst = sharedPreferences.getBoolean("firstTime", true);
-//Shared Peference
-     /*   if (!isFirst) {
 
-        }*/
         firebaseAuth = FirebaseAuth.getInstance();
         userName = findViewById(R.id.edtUserName);
         password = findViewById(R.id.edtPassword);
         //      presenter = new LoginPresenter(this);
+
+        if (!isFirst) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -103,12 +110,15 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            //noteActivity();
-                            Toast.makeText(LoginActivity.this, "signInWithCredential:success", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, AddTrip.class);
-                            startActivity(intent);
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
+                            intent.putExtras(bundle);
+                            editor = sharedPreferences.edit();
                             editor.putBoolean("firstTime", false);
                             editor.commit();
+
+                            startActivity(intent);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -144,10 +154,12 @@ public class LoginActivity extends AppCompatActivity {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
                                 intent.putExtras(bundle);
+                                editor = sharedPreferences.edit();
+                                editor.putBoolean("firstTime", false);
+                                editor.commit();
+
                                 startActivity(intent);
-                                // Toast.makeText(LoginActivity.this, "Authentication done", Toast.LENGTH_SHORT).show();
-                                // editor.putBoolean("firstTime", false);
-                                //editor.commit();
+
 
                             } else {
                                 Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
