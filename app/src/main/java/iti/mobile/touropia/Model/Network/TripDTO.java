@@ -1,8 +1,10 @@
 package iti.mobile.touropia.Model.Network;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 
-public class TripDTO {
+import java.io.Serializable;
+
+public class TripDTO implements Serializable {
 
     private String trip_name;
     private String trip_note;

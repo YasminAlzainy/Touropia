@@ -17,20 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".EditTripActivity"></activity>
         <activity
-            android:name=".NotesActivity"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
-
-        <activity android:name=".Screens.AddTrip.AddTrip"></activity>
-
-        <activity
-            android:name=".Screens.History.HistoryActivity"
-            android:label="@string/HistoryTrips" />
-        <activity
-            android:name=".Screens.Home.HomeActivity"
-            android:label="@string/UpcommingTrips">
-
-        </activity>
+            android:name=".Screens.Notes.NotesActivity"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".Screens.AddTrip.AddTrip" />
+        <activity android:name=".Screens.History.HistoryActivity" />
+        <activity android:name=".Screens.Home.HomeActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -45,21 +38,15 @@
 
         <activity
             android:name=".Screens.Map.MapsActivity"
-            android:label="@string/title_activity_maps">
-
-        </activity>
-        <activity android:name=".Registration.RegistrationActivity"></activity>
-
+            android:label="@string/title_activity_maps"></activity>
+        <activity android:name=".Registration.RegistrationActivity" />
         <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
-
     </application>
 
 </manifest>

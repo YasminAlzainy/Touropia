@@ -1,25 +1,18 @@
-package iti.mobile.touropia.Screens.AddTrip;
+package iti.mobile.touropia;
 
-
-import android.app.ActionBar;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,45 +32,35 @@ import java.util.Calendar;
 import iti.mobile.touropia.Model.Network.FirebaseConnection;
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
-import iti.mobile.touropia.R;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 
-public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditTripActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener{
 
-    /* String trip_Name;
-     String from;
-     String to;
-     LatLng latLangFrom;
-     LatLng latLangTo;
-     String trip_time;
-     String trip_date;
-     int trip_round;
-     boolean trip_status;
-
-     String note;
-     */
     Button btnDatePicker, btnTimePicker;
     TripDTO tripDTO;
     EditText tripName;
     SwitchCompat round;
     EditText trip_note;
     private static final String TAG = "Object";
-    private DatabaseReference mDatabase;
-    String userId;
+   // private DatabaseReference mDatabase;
+   //String userId;
     private int mYear, mMonth, mDay, mHour, mMinute;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
+        setContentView(R.layout.activity_edit_trip);
+
         tripDTO = new TripDTO();
         Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeatSpinner.setAdapter(spinnerAdapter);
         repeatSpinner.setOnItemSelectedListener(this);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        userId = bundle.getString("userId");
+
+       // userId = bundle.getString("userId");
 
 
 
@@ -89,7 +72,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         trip_note = findViewById(R.id.note);
         tripName = findViewById(R.id.name);
         round = findViewById(R.id.round);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+       // mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
 ////////////////////////------------------------------------------------------------
@@ -121,7 +104,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 // TODO: Handle the error.
 
 
-                Toast.makeText(AddTrip.this, "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,12 +129,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onError(Status status) {
 
-                Toast.makeText(AddTrip.this, "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
     public void time(View view) {
         Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
@@ -221,12 +202,13 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
         if (ValidateData()) {
 
-            String id = mDatabase.push().getKey();
-            FirebaseDatabase database = FirebaseConnection.getConnection();
-            mDatabase = database.getReference("trips").child(userId);
+           // String id = mDatabase.push().getKey();
+        //    FirebaseDatabase database = FirebaseConnection.getConnection();
+         //   mDatabase = database.getReference("trips").child(userId);
 
-            mDatabase.child(id).setValue(tripDTO);
-            Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+           // mDatabase.child(id).setValue(tripDTO);
+
+            Toast.makeText(this, " Your Trip Edited successfully ", Toast.LENGTH_SHORT).show();
 
 
             tripName.setText("");
@@ -257,7 +239,4 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 
-    public void addTrip() {
-
-    }
 }

@@ -1,6 +1,10 @@
 package iti.mobile.touropia.Screens.Home;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -13,20 +17,28 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import iti.mobile.touropia.EditTripActivity;
+import iti.mobile.touropia.Model.Network.LatLng;
+import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
 
 import java.util.List;
 
 import iti.mobile.touropia.Model.Network.TripData;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
+import iti.mobile.touropia.Screens.Notes.NotesActivity;
 
 public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsAdapter.MyViewHolder> {
 
-    private List<TripData> tripList;
+    private List<TripDTO> tripList;
     private Context context;
-    public upcommingTripsAdapter(List<TripData> upcommingTripList, Context applicationContext) {
+    protected HomePresenterImpl presenter;
+    public upcommingTripsAdapter(List<TripDTO> upcommingTripList, Context applicationContext,HomePresenterImpl presenter) {
         context=applicationContext;
         tripList=upcommingTripList;
+        this.presenter=presenter;
     }
 
     @NonNull
@@ -42,12 +54,19 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
     @Override
     public void onBindViewHolder(@NonNull upcommingTripsAdapter.MyViewHolder holder, int position) {
 
-        TripData tripData=tripList.get(position);
-        holder.tripNameTextView.setText( tripData.getName());
-        holder.tripDateTextView.setText( tripData.getDate());
-        holder.tripTimeTextView.setText( tripData.getTime());
-        holder.tripDestinationTextView.setText( tripData.getTo());
-        holder.tripSourceTextView.setText( tripData.getFrom());
+        TripDTO trip=tripList.get(position);
+        holder.tripNameTextView.setText( trip.getTrip_name());
+        holder.tripDateTextView.setText( trip.getTrip_date());
+        holder.tripTimeTextView.setText( trip.getTrip_time());
+        holder.tripDestinationTextView.setText( trip.getTrip_end_point());
+        holder.tripSourceTextView.setText( trip.getTrip_start_point());
+        holder.presenter=this.presenter;
+        holder.Position=position;
+        holder.Notes=trip.getTrip_note();
+        holder.source=trip.getLatLangFrom();
+        holder.Destination=trip.getlatLangTo();
+        holder.trip=trip;
+
 //        Glide.with(context)
 //                .load(List.get(position).getFlag())
 //                .into(holder.countryFlagImageView);
@@ -67,8 +86,17 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
         public TextView tripDestinationTextView;
         public ImageView tripImageView;
         public Button tripMenuButton;
+        private Context context;
+        private String Notes;
+        private HomePresenterImpl presenter;
+        private int Position;
+        private LatLng source;
+        private LatLng Destination;
+        private TripDTO trip;
+
         public MyViewHolder(final View view) {
             super(view);
+            context=view.getContext();
             tripNameTextView = view.findViewById(R.id.tripName);
             tripSourceTextView = view.findViewById(R.id.goFrom);
             tripDestinationTextView = view.findViewById(R.id.goTo);
@@ -87,17 +115,33 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             switch (menuItem.getItemId()){
                                 case R.id.Delete:
-                                    Toast.makeText(tripMenuButton.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(tripMenuButton.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                                    presenter.DeleteTrip(Position);
                                     return true;
-
                                 case R.id.Start:
-                                    Toast.makeText(tripMenuButton.getContext(), "Start", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(tripMenuButton.getContext(), "Start", Toast.LENGTH_SHORT).show();
+                                    Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr="+source.getLatitude()+","+source.getLongitude()+"&daddr="+Destination.getLatitude()+","+Destination.getLongitude()));
+                                    trip.setTrip_status(false);
+                                    presenter.EditTrip(trip,Position);
+                                    context.startActivity(MapIntent);
                                     return true;
                                 case R.id.Notes:
-                                    Toast.makeText(tripMenuButton.getContext(), "Notes", Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent( context, NotesActivity.class);
+                                    Bundle bundle=new Bundle();
+                                    bundle.putString("Notes",Notes);
+                                    bundle.putString("tripName",tripNameTextView.getText().toString());
+                                    intent.putExtras(bundle);
+                                    context.startActivity(intent);
+                                   // Toast.makeText(tripMenuButton.getContext(), "Notes", Toast.LENGTH_SHORT).show();
                                     return true;
                                 case R.id.Edit:
-                                    Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
+                                    Intent EditIntent=new Intent( context, EditTripActivity.class);
+                                    EditIntent.putExtra("Position",Position);
+                                    EditIntent.putExtra("Preseneter", (Parcelable) presenter);
+                                    EditIntent.putExtra("Trip",trip);
+                                    context.startActivity(EditIntent);
+                                    //Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
+
                                     return true;
                                 default:
                                     return false;
