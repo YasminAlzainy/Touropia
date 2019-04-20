@@ -29,7 +29,7 @@ public class HistoryPresenterImpl implements HistoryContact.HistoryPresenter {
     @Override
     public void HistoryTrips(List<TripDTO> historyTripList,List<String>keys) {
         this.keys=keys;
-        //history.showHistoryTrips(history.getApplicationContext(),historyTripList);
+        history.showHistoryTrips(history.getApplicationContext(),historyTripList);
     }
     @Override
     public void DeleteTrip(int position){

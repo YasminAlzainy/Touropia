@@ -42,6 +42,7 @@ public class GetHistoryTrips {
 
                 //clear adapter
                 historyTripList.clear();
+                Historykeys.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 

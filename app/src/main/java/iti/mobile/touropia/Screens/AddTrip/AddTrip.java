@@ -1,53 +1,132 @@
 package iti.mobile.touropia.Screens.AddTrip;
 
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.SupportMapFragment;
+//import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import iti.mobile.touropia.Model.Network.FirebaseConnection;
+import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
+import iti.mobile.touropia.Model.Network.LatLng;
+import iti.mobile.touropia.Screens.Home.HomeActivity;
+import maes.tech.intentanim.CustomIntent;
 
 public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    String trip_Name;
+    String from;
+    String to;
+    LatLng latLangFrom;
+    LatLng latLangTo;
+    LatLng latLangFromBack;
+    LatLng latLangToBack;
+    String trip_time;
+    String trip_date;
+    String trip_timeBack;
+    String trip_dateBack;
+    boolean roundTrip = false;
+    ArrayList<String> note;
+    Calendar currentCalendar;
+    Calendar myCalendar;
+    Calendar myCalendarBack;
     Button btnDatePicker, btnTimePicker;
+    Button btnDatePickerBack, btnTimePickerBack;
+    TripDTO tripDTO;
+    TripDTO tripDTOBack;
+    EditText tripName;
+    SwitchCompat round;
+    EditText trip_note;
+    private static final String TAG = "Object";
+    private DatabaseReference mDatabase;
+    String userId;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
+
+    private int mYearBack, mMonthBack, mDayBack, mHourBack, mMinuteBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
-
+        tripDTO = new TripDTO();
         Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
-
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeatSpinner.setAdapter(spinnerAdapter);
         repeatSpinner.setOnItemSelectedListener(this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        userId = bundle.getString("userId");
 
-        btnDatePicker = (Button) findViewById(R.id.btn_date);
-        btnTimePicker = (Button) findViewById(R.id.btn_time);
+////////--------------- intialize ---------------------------------------------------
+        myCalendar = Calendar.getInstance();
+        myCalendarBack = Calendar.getInstance();
+        currentCalendar = Calendar.getInstance();
+        note = new ArrayList<>();
+        btnDatePicker = findViewById(R.id.btn_date);
+        btnTimePicker = findViewById(R.id.btn_time);
+        btnDatePickerBack = findViewById(R.id.btn_dateBack);
+        btnTimePickerBack = findViewById(R.id.btn_timeBack);
+
+        trip_note = findViewById(R.id.note);
+        tripName = findViewById(R.id.name);
+        round = findViewById(R.id.round);
+        final LinearLayout layout = findViewById(R.id.linearBack);
+        //----------------
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+//-----------------------
+
+
+        round.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    layout.setVisibility(View.VISIBLE);
+                    tripDTOBack = new TripDTO();
+                    roundTrip = true;
+//                    Toast.makeText(AddTrip.this, roundTrip + "", Toast.LENGTH_SHORT).show();
+                } else {
+                    roundTrip = false;
+                    layout.setVisibility(View.GONE);
+                    //                  Toast.makeText(AddTrip.this, roundTrip + "", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+////////////////////////------------------------------------------------------------
+
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
@@ -64,19 +143,26 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
 
-                Toast.makeText(AddTrip.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
+                from = place.getName();
 
-                //  Log.e(TAG, "Place: " + place.getName() + ", " + place.getId());
-                //mMap.clear();
-                //mMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName()).snippet(place.getAddress()));
-                //Log.e(TAG, "onPlaceSelected: "+place.getAddress() );
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(    place.getLatLng(),12));
+                latLangFrom = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
+                latLangToBack = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
+
+                // latLangToBack = place.getLatLng();
+
+                // tripDTO.setlatLangFrom(place.getLatLng());
+
+                tripDTO.setlatLangFrom(latLangFrom);
+
+
             }
 
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-                //Log.e(TAG, "An error occurred: " + status);
+
+
+                Toast.makeText(AddTrip.this, "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -89,18 +175,30 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                //Log.e(TAG, "Place: " + place.getName() + ", " + place.getId());
-                //mMap.clear();
-                //mMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName()).snippet(place.getAddress()));
-                //Log.e(TAG, "onPlaceSelected: "+place.getAddress() );
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(    place.getLatLng(),12));
-                Toast.makeText(AddTrip.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
+                //set langlat2 and name here
+                //Toast.makeText(AddTrip.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
+
+                to = place.getName();
+                /*latLangTo = place.getLatLng();
+                latLangFromBack = place.getLatLng();
+                tripDTO.setlatLangTo(latLangTo);
+            */
+
+                latLangTo = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
+                latLangFromBack = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
+
+                // latLangToBack = place.getLatLng();
+
+                // tripDTO.setlatLangFrom(place.getLatLng());
+
+                tripDTO.setlatLangTo(latLangTo);
+
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
-                //  Log.e(TAG, "An error occurred: " + status);
+
+                Toast.makeText(AddTrip.this, "Sorry an error happened ... Please try again", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -119,10 +217,70 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
 
-                        Toast.makeText(AddTrip.this, hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
+
+                        trip_time = hourOfDay + ":" + minute;
+                        myCalendar.set(Calendar.HOUR_OF_DAY, mHour);
+                        myCalendar.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendar.set(Calendar.SECOND, 59);
+
+
                     }
                 }, mHour, mMinute, false);
+
         timePickerDialog.show();
+    }
+
+    public void getTimeBack(View view) {
+
+        Calendar c = Calendar.getInstance();
+        mHourBack = c.get(Calendar.HOUR_OF_DAY);
+        mMinuteBack = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+
+
+                        trip_timeBack = hourOfDay + ":" + minute;
+                        myCalendarBack.set(Calendar.HOUR_OF_DAY, mHour);
+                        myCalendarBack.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendarBack.set(Calendar.SECOND, 59);
+
+
+                    }
+                }, mHourBack, mMinuteBack, false);
+
+        timePickerDialog.show();
+    }
+
+
+    public void getDateBack(View view) {
+        Calendar c = Calendar.getInstance();
+        mYearBack = c.get(Calendar.YEAR);
+        mMonthBack = c.get(Calendar.MONTH);
+        mDayBack = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+
+                        trip_dateBack = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        myCalendarBack.set(Calendar.YEAR, year);
+                        myCalendarBack.set(Calendar.MONTH, monthOfYear);
+                        myCalendarBack.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                    }
+                }, mYearBack, mMonthBack, mDayBack);
+        datePickerDialog.show();
     }
 
     public void date(View view) {
@@ -139,7 +297,12 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 
-                        Toast.makeText(AddTrip.this, dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, Toast.LENGTH_SHORT).show();
+
+                        trip_date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
@@ -148,13 +311,161 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        Toast.makeText(this, item, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, item, Toast.LENGTH_SHORT).show();
+
+        tripDTO.setRepeate(item);
+
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // send defult no repeat ;
+        tripDTO.setRepeate("noRepeat");
 
     }
+
+    public void addNote(View view) {
+        String stringNote;
+        stringNote = trip_note.getText().toString();
+        if (stringNote.matches("")) {
+            Toast.makeText(this, "please add note first to add another one ", Toast.LENGTH_SHORT).show();
+
+        } else {
+            note.add(stringNote);
+            trip_note.setText("");
+            Toast.makeText(this, "your note is added .. add another one if you want ", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    public void addTrip(View view) {
+
+        if (roundTrip) {
+            if (ValidateDataRound()) {
+
+                String id = mDatabase.push().getKey();
+                FirebaseDatabase database = FirebaseConnection.getConnection();
+                mDatabase = database.getReference("trips").child(userId);
+
+                mDatabase.child(id).setValue(tripDTO);
+                mDatabase.child(id + 1).setValue(tripDTOBack);
+                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                startActivity(intent);
+                CustomIntent.customType(this, "right-to-left");
+
+            } else {
+                Toast.makeText(this, "enter round method", Toast.LENGTH_SHORT).show();
+            }
+
+
+        } else {
+            if (ValidateData()) {
+
+                String id = mDatabase.push().getKey();
+                FirebaseDatabase database = FirebaseConnection.getConnection();
+                mDatabase = database.getReference("trips").child(userId);
+                mDatabase.child(id).setValue(tripDTO);
+                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                startActivity(intent);
+                CustomIntent.customType(this, "right-to-left");
+
+            } else {
+                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private boolean ValidateData() {
+
+        trip_Name = tripName.getText().toString();
+        currentCalendar.setTimeInMillis(System.currentTimeMillis());
+        tripDTO.setTrip_name(trip_Name);
+        //note = trip_note.getText().toString();
+        tripDTO.setTrip_status(true);
+        boolean validate;
+
+        if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null) {
+            validate = false;
+
+
+        } else {
+
+
+            if (myCalendar.compareTo(currentCalendar) <= 0) {
+                validate = false;
+                Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                validate = true;
+                tripDTO.setTrip_name(trip_Name);
+                tripDTO.setTrip_time(trip_time);
+                tripDTO.setTrip_date(trip_date);
+                tripDTO.setTrip_start_point(from);
+                tripDTO.setTrip_end_point(to);
+                tripDTO.setTrip_note(note);
+            }
+
+        }
+
+
+        return validate;
+    }
+
+
+    private boolean ValidateDataRound() {
+
+        trip_Name = tripName.getText().toString();
+        currentCalendar.setTimeInMillis(System.currentTimeMillis());
+        tripDTO.setTrip_name(trip_Name);
+        //note = trip_note.getText().toString();
+        tripDTO.setTrip_status(true);
+        boolean validate;
+
+
+        if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null || trip_dateBack == null
+                || trip_timeBack == null) {
+            validate = false;
+
+
+        } else {
+
+
+            if (myCalendar.compareTo(currentCalendar) <= 0 || myCalendarBack.compareTo(currentCalendar) <= 0) {
+                validate = false;
+                Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
+
+            } else {
+                validate = true;
+                tripDTO.setTrip_name(trip_Name);
+                tripDTO.setTrip_time(trip_time);
+                tripDTO.setTrip_date(trip_date);
+                tripDTO.setTrip_start_point(from);
+                tripDTO.setTrip_end_point(to);
+                tripDTO.setTrip_note(note);
+
+                tripDTOBack.setTrip_name(trip_Name + " Back");
+                tripDTOBack.setTrip_time(trip_timeBack);
+                tripDTOBack.setTrip_date(trip_dateBack);
+                tripDTOBack.setTrip_start_point(to);
+                tripDTOBack.setTrip_end_point(from);
+                tripDTOBack.setlatLangTo(latLangToBack);
+                tripDTOBack.setlatLangFrom(latLangFromBack);
+                tripDTOBack.setTrip_note(note);
+                tripDTOBack.setTrip_status(true);
+
+            }
+
+        }
+
+
+        return validate;
+    }
+
+
 }

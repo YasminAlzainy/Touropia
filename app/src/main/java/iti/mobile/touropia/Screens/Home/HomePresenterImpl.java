@@ -29,7 +29,7 @@ public class HomePresenterImpl  implements HomeContact.HomePresenter {
     public void upcommingTrips(List<TripDTO> upcommingTripsList,List<String> keys) {
         this.keys=keys;
         //System.out.println("Activity "+upcommingTripList.size());
-        //home.showUpcommingTrips(home.getApplicationContext(),upcommingTripList);
+        home.showUpcommingTrips(home.getApplicationContext(),upcommingTripList);
     }
 
     @Override

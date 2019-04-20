@@ -19,18 +19,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".FloatNote"
-            android:enabled="true"
-            android:exported="true"></service>
+        <activity android:name=".Screens.SplashScreen.SpalshScreen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Screens.Notes.NotesActivity"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
 
         <activity android:name=".Screens.AddTrip.AddTrip"></activity>
+
         <activity
             android:name=".Screens.History.HistoryActivity"
             android:label="@string/HistoryTrips" />
         <activity
             android:name=".Screens.Home.HomeActivity"
-            android:label="@string/UpcommingTrips"></activity>
+            android:label="@string/UpcommingTrips">
+
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,14 +57,24 @@
         <activity
             android:name=".Screens.Map.MapsActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".Registration.RegistrationActivity"></activity>
-        <activity android:name=".Login.LoginActivity"></activity>
+        <activity
+            android:name=".Registration.RegistrationActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".Login.LoginActivity"
+            android:noHistory="true">
+
+        </activity>
+
+        <activity android:name=".EditTripActivity"></activity>
+
+        <service
+            android:name=".FloatNote"
+            android:enabled="true"
+            android:exported="true"></service>
+
     </application>
 
 </manifest>
