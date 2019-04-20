@@ -370,6 +370,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 mDatabase.child(id).setValue(tripDTO);
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 CustomIntent.customType(this, "right-to-left");
 

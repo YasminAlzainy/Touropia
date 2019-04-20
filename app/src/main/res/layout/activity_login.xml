@@ -36,6 +36,7 @@
             android:src="@drawable/img_user"
             android:tint="@color/white" />
 
+
         <EditText
             android:id="@+id/edtUserName"
             android:layout_width="match_parent"
