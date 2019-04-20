@@ -189,7 +189,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
                 // tripDTO.setlatLangFrom(place.getLatLng());
 
-                tripDTO.setlatLangFrom(latLangTo);
+                tripDTO.setlatLangTo(latLangTo);
 
             }
 
