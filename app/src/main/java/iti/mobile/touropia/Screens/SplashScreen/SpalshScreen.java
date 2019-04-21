@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import iti.mobile.touropia.Login.LoginActivity;
 import iti.mobile.touropia.R;
+import maes.tech.intentanim.CustomIntent;
 
 public class SpalshScreen extends AppCompatActivity {
 
@@ -23,9 +24,10 @@ public class SpalshScreen extends AppCompatActivity {
             public void run() {
 
                 try {
-                    sleep(2000);
+                    sleep(3000);
                     Intent intent = new Intent(SpalshScreen.this, LoginActivity.class);
                     startActivity(intent);
+                    CustomIntent.customType(SpalshScreen.this, "left-to-right");
                     finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

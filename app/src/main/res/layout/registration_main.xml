@@ -1,107 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/quantum_yellowA100"
-    tools:context=".Registration.RegistrationActivity">
 
-    <TextView
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ECF0F1"
+        tools:context=".Registration.RegistrationActivity">
 
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="TOUROPIA\nRegistration"
-        android:textColor="@color/black"
-        android:textSize="45dp"
-        android:textStyle="italic" />
+        <TextView
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="TOUROPIA\nRegistration"
+            android:textColor="@color/black"
+            android:textSize="45dp"
+            android:textStyle="italic" />
 
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="400px"
-        android:layout_marginRight="30dp">
-
-        <ImageView
-            android:id="@+id/imageView_userIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/icons"
-            android:padding="8dp"
-            android:src="@drawable/img_user"
-            android:tint="@color/white" />
-
-        <EditText
-            android:id="@+id/edtemailregister"
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView_userIcon"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="-3dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_toRightOf="@+id/imageView_userIcon"
-            android:background="@color/editTextBG"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="20dp"
-            android:textSize="15sp" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="400px"
+            android:layout_marginRight="30dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/imageView_userIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/icons"
+                android:padding="8dp"
+                android:src="@drawable/img_user"
+                android:tint="@color/white" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="43dp"
-        android:layout_marginRight="30dp">
+            <EditText
+                android:id="@+id/edtemailregister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView_userIcon"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="-3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toRightOf="@+id/imageView_userIcon"
+                android:background="@drawable/text"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="20dp"
+                android:textSize="15sp" />
 
-        <ImageView
-            android:id="@+id/imageView_passwordIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/icons"
-            android:padding="8dp"
-            android:src="@drawable/img_authentication"
-            android:tint="@color/white" />
+        </RelativeLayout>
 
-        <EditText
-            android:id="@+id/edtpasswordregister"
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView_passwordIcon"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="-8dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_toRightOf="@+id/imageView_passwordIcon"
-            android:background="@color/editTextBG"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingLeft="20dp"
-            android:textSize="15sp" />
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginRight="30dp">
+
+            <ImageView
+                android:id="@+id/imageView_passwordIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/icons"
+                android:padding="8dp"
+                android:src="@drawable/img_authentication"
+                android:tint="@color/white" />
+
+            <EditText
+                android:id="@+id/edtpasswordregister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView_passwordIcon"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="-8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toRightOf="@+id/imageView_passwordIcon"
+                android:background="@drawable/text"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="296dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_marginLeft="100px"
+            android:layout_marginTop="77dp"
+            android:layout_marginRight="100px"
+            android:layout_marginBottom="30px"
+            android:background="@drawable/custom_buuton"
+            android:onClick="registeruser"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
 
     </RelativeLayout>
-
-    <Button
-        android:layout_width="296dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout2"
-        android:layout_marginLeft="100px"
-        android:layout_marginTop="77dp"
-        android:layout_marginRight="100px"
-        android:layout_marginBottom="30px"
-        android:background="@color/icons"
-        android:onClick="registeruser"
-        android:text="Register"
-        android:textAllCaps="false" />
-
-
-</RelativeLayout>
+</ScrollView>
