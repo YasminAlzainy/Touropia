@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class TripDTO {
+public class TripDTO implements Serializable{
 
     private String trip_name;
     private List<String> trip_note;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import iti.mobile.touropia.EditTripActivity;
+import iti.mobile.touropia.Screens.EditTrip.EditTripActivity;
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -26,8 +24,6 @@ import iti.mobile.touropia.R;
 
 import java.util.List;
 
-import iti.mobile.touropia.Model.Network.TripData;
-import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.Notes.NotesActivity;
 
 public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsAdapter.MyViewHolder> {
@@ -136,9 +132,11 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                     return true;
                                 case R.id.Edit:
                                     Intent EditIntent=new Intent( context, EditTripActivity.class);
-                                    EditIntent.putExtra("Position",Position);
-                                    EditIntent.putExtra("Preseneter", (Parcelable) presenter);
-                                   // EditIntent.putExtra("Trip",trip);
+
+                                    EditIntent.putExtra("userId",presenter.getUserId());
+                                    EditIntent.putExtra("Trip", trip);
+                                    EditIntent.putExtra("key",presenter.getKeys().get(Position));
+
                                     context.startActivity(EditIntent);
                                     //Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
 

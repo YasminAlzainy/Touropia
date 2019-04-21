@@ -33,7 +33,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
     private RecyclerView.Adapter upcommingTripsAdapter;
     private FloatingActionButton floatingActionButton;
     private HomePresenterImpl homePresenter;
-
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private String userId;
@@ -72,7 +71,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
                 {
                     Toast.makeText(HomeActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
                 }
-
                 return true;
             }
         });

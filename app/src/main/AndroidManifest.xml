@@ -68,7 +68,7 @@
 
         </activity>
 
-        <activity android:name=".EditTripActivity"></activity>
+        <activity android:name=".Screens.EditTrip.EditTripActivity"></activity>
 
         <service
             android:name=".FloatNote"

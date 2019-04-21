@@ -1,6 +1,8 @@
 package iti.mobile.touropia.Model.Network;
 
-public class LatLng {
+import java.io.Serializable;
+
+public class LatLng implements Serializable {
     private Double latitude;
     private Double longitude;
 
