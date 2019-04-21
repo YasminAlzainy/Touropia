@@ -26,6 +26,13 @@ public class GetUpcommingTrips {
     private HomeContact.HomePresenter homePresenter;
     private  List<String> upcommingKeys;
 
+
+    public GetUpcommingTrips(String userID){
+        //get database Connection
+        mDatabase =FirebaseConnection.getConnection();
+        myRef = mDatabase.getReference("trips").child(userID);
+    }
+
     public GetUpcommingTrips(String userID, final HomePresenterImpl presenter) {
         this.homePresenter=presenter;
         //get database Connection

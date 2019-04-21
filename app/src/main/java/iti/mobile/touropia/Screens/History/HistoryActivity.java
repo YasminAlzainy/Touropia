@@ -3,6 +3,7 @@ package iti.mobile.touropia.Screens.History;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +31,7 @@ import iti.mobile.touropia.Screens.Map.MapsActivity;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryContact.HistoryView {
 
-    private List<TripDTO> historyTripList=new ArrayList<TripDTO>();
+    private List<TripDTO> historyTripList;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView historyTripsRecyclerView;
     private RecyclerView.Adapter historyTripsAdapter;
@@ -43,9 +46,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
         super.onCreate(savedInstanceState);
         setTitle(R.string.HistoryTrips);
         setContentView(R.layout.activity_history);
+
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
         userId=bundle.getString("userId");
+        historyTripList=new ArrayList<TripDTO>();
         historyTripsRecyclerView =findViewById(R.id.historyTripList);
         bottomNavigationView=findViewById(R.id.navigation);
         floatingActionButton = findViewById(R.id.floatingActionButn);
@@ -78,18 +83,21 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                Bundle bundle=new Bundle();
+
                 switch (item.getItemId()){
                     case R.id.menu_home:
                         Intent HomeIntent=new Intent(getApplicationContext(), HomeActivity.class);
+                        Bundle bundle=new Bundle();
                         bundle.putString("userId",userId);
                         HomeIntent.putExtras(bundle);
                         startActivity(HomeIntent);
                         return true;
                     case R.id.menu_map:
+//                        for(TripDTO trip : historyTripList){
+//                            trip.getlatLangTo()
+//                        }
                         Intent MapIntent =new Intent(getApplicationContext(), MapsActivity.class);
-                        //bundle.pu
-                        MapIntent.putExtras(bundle);
+                       // MapIntent.putExtra("TripList", (Serializable) historyTripList);
                         startActivity(MapIntent);
                         return true;
                 }

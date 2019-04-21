@@ -6,8 +6,9 @@ import java.util.List;
 
 import iti.mobile.touropia.Model.Network.GetUpcommingTrips;
 import iti.mobile.touropia.Model.Network.TripDTO;
+import iti.mobile.touropia.Model.Network.Model;
 
-public class HomePresenterImpl  implements HomeContact.HomePresenter {
+public class HomePresenterImpl  implements HomeContact.HomePresenter , Model{
     private HomeActivity home;
     private String userId;
     private List<TripDTO> upcommingTripList;
@@ -37,9 +38,14 @@ public class HomePresenterImpl  implements HomeContact.HomePresenter {
         GetUpcommingTrips upcommingTrips=new GetUpcommingTrips(userId,this);
         upcommingTrips.deleteTrip(keys.get(position));
     }
-
+    @Override
     public void EditTrip(TripDTO editedTrip,int position){
         GetUpcommingTrips upcommingTrips=new GetUpcommingTrips(userId,this);
         upcommingTrips.editTrip(editedTrip,keys.get(position));
     }
+
+    public List<String> getKeys(){
+        return  keys;
+    }
+    public String getUserId(){ return userId; }
 }

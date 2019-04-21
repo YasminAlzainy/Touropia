@@ -75,7 +75,7 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
 
-        <activity android:name=".EditTripActivity"></activity>
+        <activity android:name=".Screens.EditTrip.EditTripActivity"></activity>
 
         <service
             android:name=".FloatNote"

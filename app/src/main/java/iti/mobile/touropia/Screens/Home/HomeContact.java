@@ -17,5 +17,6 @@ public interface HomeContact {
         void getUpcommingTrips(List<TripDTO> upcommingTripsList);
         void upcommingTrips(List<TripDTO> upcommingTripsList,List<String> keys);
         void DeleteTrip(int position);
+        void EditTrip(TripDTO editedTrip,int position);
     }
 }
