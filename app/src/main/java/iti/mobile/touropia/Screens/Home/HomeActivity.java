@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
     private RecyclerView upcommingTripsRecyclerView;
     private RecyclerView.Adapter upcommingTripsAdapter;
     private FloatingActionButton floatingActionButton;
-    private BottomNavigationView bottomNavigationView;
     private HomePresenterImpl homePresenter;
 
     private DrawerLayout drawerLayout;
@@ -54,16 +53,20 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
+                Bundle bundle =new Bundle();
+                bundle.putString("userId",userId);
                 drawerLayout.closeDrawers();
                 if( menuItem.getItemId() == R.id.nav_history)
                 {
                     Intent intent = new Intent(HomeActivity.this , HistoryActivity.class);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else if ( menuItem.getItemId() == R.id.nav_home)
                 {
-                    Intent intent = new Intent(HomeActivity.this , HomeActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(HomeActivity.this , HomeActivity.class);
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
                 }
                 else if ( menuItem.getItemId() == R.id.nav_logout)
                 {
@@ -75,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
         });
 
         upcommingTripsRecyclerView =findViewById(R.id.upcommingTripList);
-        bottomNavigationView=findViewById(R.id.navigation);
         floatingActionButton = findViewById(R.id.floatingActionButn);
         ((View) floatingActionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,36 +92,15 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
             }
         });
         upcommingTripsRecyclerView.setHasFixedSize(true);
-        // use a linear layout manager
        // upcommingTripList.add(new TripData("college", "helmya", "Helwan Helwan Helwan Helwan", "12/04/2019", "8:50"));
-        //upcommingTripList.add(new TripData("college", "helmya", "Helwan Helwan Helwan Helwan", "12/04/2019", "8:50"));
-        //upcommingTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
-        //upcommingTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
 
+        // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         upcommingTripsRecyclerView.setLayoutManager(layoutManager);
 
         //homePresenter
         homePresenter=new HomePresenterImpl(this,userId);
         homePresenter.getUpcommingTrips(upcommingTripsList);
-
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.menu_history:
-                        Intent intent=new Intent(getApplicationContext(), HistoryActivity.class);
-                        Bundle bundle1=new Bundle();
-                        bundle.putString("userId",userId);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        return true;
-                }
-                return true;
-            }
-        });
-
     }
 
     @Override
@@ -127,8 +108,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
         this.upcommingTripsList=upcommingTripList;
         upcommingTripsAdapter  = new upcommingTripsAdapter(this.upcommingTripsList,context,this.homePresenter);
         upcommingTripsRecyclerView.setAdapter(upcommingTripsAdapter);
-
-        System.out.println("Setting Adapter ");
+        //System.out.println("Setting Adapter ");
         upcommingTripsAdapter.notifyDataSetChanged();
     }
 

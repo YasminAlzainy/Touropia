@@ -3,6 +3,7 @@ package iti.mobile.touropia.Screens.History;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -22,6 +24,7 @@ import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
 import iti.mobile.touropia.Screens.Home.HomePresenterImpl;
 import iti.mobile.touropia.Screens.Home.upcommingTripsAdapter;
+import iti.mobile.touropia.Screens.Map.MapsActivity;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryContact.HistoryView {
 
@@ -30,6 +33,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
     private RecyclerView historyTripsRecyclerView;
     private RecyclerView.Adapter historyTripsAdapter;
     private FloatingActionButton floatingActionButton;
+    private BottomNavigationView bottomNavigationView;
     private String userId;
     private HistoryPresenterImpl historyPresenter;
     private DrawerLayout drawerLayout;
@@ -43,12 +47,14 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
         Bundle bundle=intent.getExtras();
         userId=bundle.getString("userId");
         historyTripsRecyclerView =findViewById(R.id.historyTripList);
+        bottomNavigationView=findViewById(R.id.navigation);
         floatingActionButton = findViewById(R.id.floatingActionButn);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
 
         ((View) floatingActionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //action that floating button do
                 //action that floating button do
                 Intent intent=new Intent(getApplicationContext(), AddTrip.class);
                 Bundle bundle=new Bundle();
@@ -58,22 +64,65 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
                 // Toast.makeText(HistoryActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // historyTripList.add(new TripData("college", "helmya", "Helwan Helwan Helwan Helwan", "12/04/2019", "8:50"));
         historyTripsRecyclerView.setHasFixedSize(true);
-        //history presenter
-        //homePresenter
-        historyPresenter=new HistoryPresenterImpl(this,userId);
-        historyPresenter.getHistoryTrips(historyTripList);
-
-
-       // historyTripList.add(new TripData("college", "helmya", "Helwan Helwan Helwan Helwan", "12/04/2019", "8:50"));
-       // historyTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
-       // historyTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
-       // historyTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
-       // historyTripList.add(new TripData("college", "kobryElkoba", "Helwan", "12/04/2019", "8:50"));
-
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         historyTripsRecyclerView.setLayoutManager(layoutManager);
+
+        //history presenter
+        historyPresenter=new HistoryPresenterImpl(this,userId);
+        historyPresenter.getHistoryTrips(historyTripList);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                Bundle bundle=new Bundle();
+                switch (item.getItemId()){
+                    case R.id.menu_home:
+                        Intent HomeIntent=new Intent(getApplicationContext(), HomeActivity.class);
+                        bundle.putString("userId",userId);
+                        HomeIntent.putExtras(bundle);
+                        startActivity(HomeIntent);
+                        return true;
+                    case R.id.menu_map:
+                        Intent MapIntent =new Intent(getApplicationContext(), MapsActivity.class);
+                        //bundle.pu
+                        MapIntent.putExtras(bundle);
+                        startActivity(MapIntent);
+                        return true;
+                }
+                return true;
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                Bundle bundle =new Bundle();
+                bundle.putString("userId",userId);
+                if( menuItem.getItemId() == R.id.nav_history)
+                {
+//                    Intent intent = new Intent(HistoryActivity.this , HistoryActivity.class);
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
+                }
+                else if ( menuItem.getItemId() == R.id.nav_home)
+                {
+                    Intent intent = new Intent(HistoryActivity.this , HomeActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else if ( menuItem.getItemId() == R.id.nav_logout)
+                {
+                    Toast.makeText(HistoryActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
 
     }
 
@@ -85,34 +134,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
         historyTripsRecyclerView.setAdapter(historyTripsAdapter);
         System.out.println("Setting Adapter ");
         historyTripsAdapter.notifyDataSetChanged();
-
-
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                drawerLayout.closeDrawers();
-                if( menuItem.getItemId() == R.id.nav_history)
-                {
-                    Intent intent = new Intent(HistoryActivity.this , HistoryActivity.class);
-                    startActivity(intent);
-                }
-                else if ( menuItem.getItemId() == R.id.nav_home)
-                {
-                    Intent intent = new Intent(HistoryActivity.this , HomeActivity.class);
-                    startActivity(intent);
-                }
-                else if ( menuItem.getItemId() == R.id.nav_logout)
-                {
-                    Toast.makeText(HistoryActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
-            }
-        });
 
     }
 }
