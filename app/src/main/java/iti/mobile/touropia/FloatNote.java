@@ -4,14 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class FloatNote extends Service {
     private WindowManager windowManager;
     private View floatingView, collapsedView, expandedView;
     private WindowManager.LayoutParams params;
+    private TextView textView_Note;
 
     public FloatNote() {
     }
@@ -24,6 +27,8 @@ public class FloatNote extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        floatingView = LayoutInflater.from(this).inflate(R.layout.floating_widget_layout, null);
+
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -32,19 +37,16 @@ public class FloatNote extends Service {
                 PixelFormat.TRANSLUCENT);
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
         windowManager.addView(floatingView, params);
 
         expandedView = floatingView.findViewById(R.id.Layout_Expended);
-
         collapsedView = floatingView.findViewById(R.id.Layout_Collapsed);
+        textView_Note = floatingView.findViewById(R.id.textView_Note);
 
         floatingView.findViewById(R.id.Widget_Close_Icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 stopSelf();
-
             }
         });
 
@@ -53,6 +55,7 @@ public class FloatNote extends Service {
             public void onClick(View view) {
 
                 collapsedView.setVisibility(View.VISIBLE);
+                textView_Note.setText("Hello this is my note!");
                 expandedView.setVisibility(View.GONE);
 
             }
