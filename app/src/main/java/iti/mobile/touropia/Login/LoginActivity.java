@@ -29,13 +29,13 @@ import iti.mobile.touropia.R;
 import iti.mobile.touropia.Registration.RegistrationActivity;
 import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
+import maes.tech.intentanim.CustomIntent;
 
 public class LoginActivity extends AppCompatActivity {
     EditText userName;
     EditText password;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
-    private static final String FACEBOOK = "facebook";
     private static final int RC_SIGN_IN = 0;
     SignInButton signInButton;
     FirebaseUser currentUser;
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
             intent.putExtras(bundle);
             startActivity(intent);
-
+            CustomIntent.customType(LoginActivity.this, "right-to-left");
 
         }
 
@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.commit();
 
                             startActivity(intent);
+                            CustomIntent.customType(LoginActivity.this, "right-to-left");
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -159,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.commit();
 
                                 startActivity(intent);
+                                CustomIntent.customType(LoginActivity.this, "right-to-left");
 
 
                             } else {
@@ -180,6 +182,7 @@ public class LoginActivity extends AppCompatActivity {
     public void registeruser(View view) {
         Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(intent);
+        CustomIntent.customType(LoginActivity.this, "bottom-to-up");
 
     }
 

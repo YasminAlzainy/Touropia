@@ -1,5 +1,7 @@
 package iti.mobile.touropia.Screens.Map;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -38,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);

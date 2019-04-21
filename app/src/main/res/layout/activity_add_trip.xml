@@ -3,125 +3,131 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="wrap_content">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/addbg"
+        android:layout_height="wrap_content"
+        android:background="#D0D3D4"
         android:orientation="vertical"
-
         tools:context=".AddTrip.AddTrip">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@mipmap/line" />
 
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/icons">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Trip Name">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </android.support.design.widget.TextInputLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/bg"
-                android:elevation="6dp">
-
-                <LinearLayout
-
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-
-                        android:id="@+id/from"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textCapSentences"
-                        android:text="start point"
-                        android:textColor="@color/textColor"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-
-
-                    <fragment
-                        android:id="@+id/autocomplete_fragment_from"
-                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                android:elevation="6dp"
+                android:shadowColor="@color/black"
+                android:shadowDx="5"
+                android:shadowDy="5"
+                android:shadowRadius="5">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="110dp"
                     android:orientation="vertical">
 
-
                     <TextView
-
-                        android:id="@+id/to"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textCapSentences"
-                        android:text="end point"
-                        android:textColor="@color/textColor"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="Add Trip"
+                        android:textColor="@color/black"
+                        android:textSize="45dp"
+                        android:textStyle="italic" />
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/line" />
 
-                    <fragment
-                        android:id="@+id/autocomplete_fragment_to"
-                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Trip Name">
 
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </android.support.design.widget.TextInputLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/from"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:inputType="textCapSentences"
+                            android:text="start point"
+                            android:textColor="@color/place_autocomplete_prediction_primary_text_highlight"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <fragment
+                            android:id="@+id/autocomplete_fragment_from"
+                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="50dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/to"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:inputType="textCapSentences"
+                            android:text="end point"
+                            android:textColor="@color/place_autocomplete_prediction_primary_text_highlight"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <fragment
+                            android:id="@+id/autocomplete_fragment_to"
+                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
                 android:elevation="6dp">
@@ -129,6 +135,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -137,7 +144,7 @@
                         android:id="@+id/btn_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="60dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_marginRight="75dp"
                         android:background="@mipmap/date"
                         android:onClick="date" />
@@ -155,11 +162,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:layout_marginTop="85dp"
                         android:orientation="horizontal">
 
@@ -167,8 +176,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
-                            android:text="Two Way ? "
-                            android:textColor="@color/textColor"
+                            android:text="Two way"
+                            android:textColor="@color/black"
                             android:textSize="20dp" />
 
 
@@ -186,6 +195,7 @@
                         android:id="@+id/linearBack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
                         android:visibility="gone">
@@ -210,30 +220,31 @@
                             />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:orientation="horizontal">
+                    <!-- <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="30dp"
+                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30dp"
-                            android:text="Repeated ? "
-                            android:textColor="@color/textColor"
-                            android:textSize="20dp" />
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginLeft="30dp"
+                             android:text="Repeated ? "
+                             android:textColor="@color/textColor"
+                             android:textSize="20dp" />
 
-                        <android.support.v7.widget.AppCompatSpinner
-                            android:id="@+id/reapetSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="80dp"
-                            android:tooltipText="No Reapeat">
+                         <android.support.v7.widget.AppCompatSpinner
+                             android:id="@+id/reapetSpinner"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginLeft="80dp"
+                             android:tooltipText="No Reapeat">
 
-                        </android.support.v7.widget.AppCompatSpinner>
+                         </android.support.v7.widget.AppCompatSpinner>
 
-                    </LinearLayout>
+                     </LinearLayout>
+                     -->
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -250,7 +261,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
                 android:elevation="6dp">
@@ -258,6 +269,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:orientation="horizontal">
 
 
@@ -284,7 +296,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/icons"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/addtrip_button"
                 android:onClick="addTrip"
                 android:text="Add Trip "
                 android:textColor="@color/white" />

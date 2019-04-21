@@ -2,7 +2,6 @@ package iti.mobile.touropia.Screens.AddTrip;
 
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
@@ -10,19 +9,16 @@ import android.view.View;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.SupportMapFragment;
-//import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -80,16 +76,11 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
         tripDTO = new TripDTO();
-        Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        repeatSpinner.setAdapter(spinnerAdapter);
-        repeatSpinner.setOnItemSelectedListener(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         userId = bundle.getString("userId");
 
-////////--------------- intialize ---------------------------------------------------
+
         myCalendar = Calendar.getInstance();
         myCalendarBack = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
@@ -103,9 +94,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         tripName = findViewById(R.id.name);
         round = findViewById(R.id.round);
         final LinearLayout layout = findViewById(R.id.linearBack);
-        //----------------
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
-//-----------------------
 
 
         round.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -115,17 +105,13 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                     layout.setVisibility(View.VISIBLE);
                     tripDTOBack = new TripDTO();
                     roundTrip = true;
-//                    Toast.makeText(AddTrip.this, roundTrip + "", Toast.LENGTH_SHORT).show();
                 } else {
                     roundTrip = false;
                     layout.setVisibility(View.GONE);
-                    //                  Toast.makeText(AddTrip.this, roundTrip + "", Toast.LENGTH_SHORT).show();
 
                 }
             }
         });
-
-////////////////////////------------------------------------------------------------
 
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
@@ -148,9 +134,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 latLangFrom = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
                 latLangToBack = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
 
-                // latLangToBack = place.getLatLng();
-
-                // tripDTO.setlatLangFrom(place.getLatLng());
 
                 tripDTO.setlatLangFrom(latLangFrom);
 
@@ -175,21 +158,13 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                //set langlat2 and name here
-                //Toast.makeText(AddTrip.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
 
                 to = place.getName();
-                /*latLangTo = place.getLatLng();
-                latLangFromBack = place.getLatLng();
-                tripDTO.setlatLangTo(latLangTo);
-            */
+
 
                 latLangTo = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
                 latLangFromBack = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude); //place.getLatLng();
 
-                // latLangToBack = place.getLatLng();
-
-                // tripDTO.setlatLangFrom(place.getLatLng());
 
                 tripDTO.setlatLangTo(latLangTo);
 
@@ -209,7 +184,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
 
@@ -236,7 +210,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         mHourBack = c.get(Calendar.HOUR_OF_DAY);
         mMinuteBack = c.get(Calendar.MINUTE);
 
-        // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
 
@@ -311,7 +284,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        //Toast.makeText(this, item, Toast.LENGTH_SHORT).show();
 
         tripDTO.setRepeate(item);
 
@@ -388,7 +360,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         trip_Name = tripName.getText().toString();
         currentCalendar.setTimeInMillis(System.currentTimeMillis());
         tripDTO.setTrip_name(trip_Name);
-        //note = trip_note.getText().toString();
         tripDTO.setTrip_status(true);
         boolean validate;
 
@@ -426,7 +397,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         trip_Name = tripName.getText().toString();
         currentCalendar.setTimeInMillis(System.currentTimeMillis());
         tripDTO.setTrip_name(trip_Name);
-        //note = trip_note.getText().toString();
         tripDTO.setTrip_status(true);
         boolean validate;
 
@@ -444,6 +414,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 
             } else {
+
+
                 validate = true;
                 tripDTO.setTrip_name(trip_Name);
                 tripDTO.setTrip_time(trip_time);
