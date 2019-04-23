@@ -51,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        startService(new Intent(MapsActivity.this, FloatNote.class));
+        //startService(new Intent(MapsActivity.this, FloatNote.class));
         //finish();
     }
 
