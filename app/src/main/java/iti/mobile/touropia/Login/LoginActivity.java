@@ -31,7 +31,7 @@ import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
 import maes.tech.intentanim.CustomIntent;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginContract.LoginView {
     EditText userName;
     EditText password;
     private GoogleSignInClient mGoogleSignInClient;
@@ -46,19 +46,21 @@ public class LoginActivity extends AppCompatActivity {
     String user_password;
     boolean isFirst;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    LoginContract.LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        presenter = new LoginPresenterImpl(this);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         isFirst = sharedPreferences.getBoolean("firstTime", true);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         userName = findViewById(R.id.edtUserName);
         password = findViewById(R.id.edtPassword);
-        //      presenter = new LoginPresenter(this);
+
 
         if (!isFirst) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -144,33 +146,8 @@ public class LoginActivity extends AppCompatActivity {
         user_name = userName.getText().toString().trim();
         user_password = password.getText().toString().trim();
 
-        if (user_name.length() > 0 && password.length() > 0) {
-            firebaseAuth.signInWithEmailAndPassword(user_name, user_password)
-
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
-                                intent.putExtras(bundle);
-                                editor = sharedPreferences.edit();
-                                editor.putBoolean("firstTime", false);
-                                editor.commit();
-
-                                startActivity(intent);
-                                CustomIntent.customType(LoginActivity.this, "right-to-left");
-
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-
-
-                    });
+        if (user_name.length() > 0 && user_password.length() > 0) {
+            presenter.checkLogin(user_name, user_password, firebaseAuth);
 
 
         } else {
@@ -187,4 +164,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void successLogin() {
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", firebaseAuth.getCurrentUser().getUid());
+        intent.putExtras(bundle);
+        editor = sharedPreferences.edit();
+        editor.putBoolean("firstTime", false);
+        editor.commit();
+        startActivity(intent);
+        CustomIntent.customType(LoginActivity.this, "right-to-left");
+
+
+    }
+
+    @Override
+    public void failLogin() {
+
+        Toast.makeText(this, "Please enter valid email and password", Toast.LENGTH_SHORT).show();
+    }
 }

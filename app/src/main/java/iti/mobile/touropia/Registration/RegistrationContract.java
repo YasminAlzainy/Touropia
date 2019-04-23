@@ -1,24 +1,22 @@
 package iti.mobile.touropia.Registration;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public interface RegistrationContract {
-    interface RegistrationView {
+    interface RegistrationPresenter {
+        void checkRegistration(String email, String password, FirebaseAuth firebaseAuth);
+
         void successRegistration();
 
-        void failedRegistration();
-
-        void emptyInput();
-
+        void failRegistration();
 
     }
 
-    interface RegistrationPresenter {
-        void Registration(String email, String password);
+    interface RegistrationnView {
 
         void successRegistration();
 
-        void failedRegistration();
-
-        void emptyInput();
+        void failRegistration();
 
 
     }

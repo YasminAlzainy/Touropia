@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +38,7 @@ import iti.mobile.touropia.Screens.Home.HomeActivity;
 import iti.mobile.touropia.Screens.Home.HomePresenterImpl;
 import maes.tech.intentanim.CustomIntent;
 
-public class EditTripActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener{
+public class EditTripActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String trip_Name;
     String from;
@@ -79,22 +80,22 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
         tripDTO = new TripDTO();
-        Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
+      /*  Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeatSpinner.setAdapter(spinnerAdapter);
-        repeatSpinner.setOnItemSelectedListener(this);
+        repeatSpinner.setOnItemSelectedListener(this);*/
         Intent intent = getIntent();
 
 
-        userId=intent.getStringExtra("userId");
-        trip= (TripDTO) intent.getSerializableExtra("Trip");
-        key=intent.getStringExtra("key");
+        userId = intent.getStringExtra("userId");
+        trip = (TripDTO) intent.getSerializableExtra("Trip");
+        key = intent.getStringExtra("key");
 
-        System.out.println("EditTrip"+trip.getTrip_name());
+        System.out.println("EditTrip" + trip.getTrip_name());
 
         //create object
-        presenter=new EditPresenterImpl(userId);
+        presenter = new EditPresenterImpl(userId);
 
 
 ////////--------------- intialize ---------------------------------------------------
@@ -110,15 +111,15 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
         trip_note = findViewById(R.id.note);
         tripName = findViewById(R.id.name);
         round = findViewById(R.id.round);
-        final LinearLayout layout = findViewById(R.id.linearBack);
+        final CardView layout = findViewById(R.id.linearBack);
         //----------------
-      //  mDatabase = FirebaseDatabase.getInstance().getReference();
+        //  mDatabase = FirebaseDatabase.getInstance().getReference();
 //-----------------------
         //set values to be edited
         tripName.setText(trip.getTrip_name());   //object trip
-
-
-
+      /*  if (trip.getTrip_note() != null) {
+            trip_note.setText(trip.getTrip_note().indexOf(1));
+        }*/
 
 
         round.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -151,10 +152,12 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_from);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
+        autocompleteFragment.setText(trip.getTrip_start_point());
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
+
 
                 from = place.getName();
 
@@ -182,8 +185,9 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
         AutocompleteSupportFragment autocompleteFragment_to = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_to);
         autocompleteFragment_to.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment_to.setText(trip.getTrip_end_point());
 
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         autocompleteFragment_to.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -224,6 +228,7 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
@@ -239,6 +244,7 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
 
                     }
                 }, mHour, mMinute, false);
+
 
         timePickerDialog.show();
     }
@@ -357,15 +363,15 @@ public class EditTripActivity extends AppCompatActivity  implements AdapterView.
         if (roundTrip) {
             if (ValidateDataRound()) {
 
-             //   String id = mDatabase.push().getKey();
-               // FirebaseDatabase database = FirebaseConnection.getConnection();
-               // mDatabase = database.getReference("trips").child(userId);
+                //   String id = mDatabase.push().getKey();
+                // FirebaseDatabase database = FirebaseConnection.getConnection();
+                // mDatabase = database.getReference("trips").child(userId);
 
-              //  mDatabase.child(id).setValue(tripDTO);
-               // mDatabase.child(id + 1).setValue(tripDTOBack);
+                //  mDatabase.child(id).setValue(tripDTO);
+                // mDatabase.child(id + 1).setValue(tripDTOBack);
 
                 //calling EditFunction in EditPresenterImpl
-                presenter.EditTrip(tripDTO,key);
+                presenter.EditTrip(tripDTO, key);
 
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 

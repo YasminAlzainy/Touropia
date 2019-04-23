@@ -35,7 +35,8 @@
                 android:shadowColor="@color/black"
                 android:shadowDx="5"
                 android:shadowDy="5"
-                android:shadowRadius="5">
+                android:shadowRadius="5"
+                app:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:gravity="center"
-                        android:text="Add Trip"
+                        android:text="TOUROBIA"
                         android:textColor="@color/black"
                         android:textSize="45dp"
                         android:textStyle="italic" />
@@ -130,7 +131,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
-                android:elevation="6dp">
+                android:elevation="6dp"
+                app:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -191,35 +193,6 @@
                             />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearBack"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <Button
-                            android:id="@+id/btn_dateBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="60dp"
-                            android:layout_marginRight="75dp"
-                            android:background="@mipmap/date"
-                            android:onClick="getDateBack" />
-
-                        <Button
-
-                            android:id="@+id/btn_timeBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/time"
-                            android:onClick="getTimeBack"
-
-                            />
-                    </LinearLayout>
-
                     <!-- <LinearLayout
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
@@ -249,6 +222,57 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/linearBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:elevation="5dp"
+                android:visibility="gone"
+                app:cardCornerRadius="20dp">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="textCapSentences"
+                    android:text="Back Trip time"
+                    android:textColor="@color/place_autocomplete_prediction_primary_text_highlight"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_dateBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="75dp"
+                        android:background="@mipmap/date"
+                        android:onClick="getDateBack" />
+
+                    <Button
+
+                        android:id="@+id/btn_timeBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/time"
+                        android:onClick="getTimeBack"
+
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
@@ -260,35 +284,54 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
-                android:elevation="6dp">
+                android:elevation="6dp"
+                app:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal">
 
 
-                    <EditText
-                        android:id="@+id/note"
-                        android:layout_width="275dp"
+                        <EditText
+                            android:id="@+id/note"
+                            android:layout_width="275dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:hint="Add Note..." />
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:onClick="addNote"
+                            android:src="@drawable/add_note_24dp" />
+                    </LinearLayout>
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/notesRecyclerView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:hint="Add Note..." />
+                        android:layout_marginTop="15dp"
+                        android:scrollbars="vertical"
+                        android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="3dp"
-                        android:onClick="addNote"
-                        android:src="@drawable/add_note_24dp" />
+                    </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
+
 
             <Button
                 android:layout_width="match_parent"
