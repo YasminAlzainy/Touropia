@@ -2,6 +2,7 @@ package iti.mobile.touropia.Screens.History;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.BottomNavigationView;
@@ -15,11 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import com.google.android.gms.maps.model.LatLng;
+
+import iti.mobile.touropia.Login.LoginActivity;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Model.Network.TripData;
@@ -41,18 +46,23 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
     private HistoryPresenterImpl historyPresenter;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    boolean isFirst;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.HistoryTrips);
         setContentView(R.layout.activity_history);
-
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        userId=bundle.getString("userId");
-        historyTripList=new ArrayList<TripDTO>();
-        historyTripsRecyclerView =findViewById(R.id.historyTripList);
-        bottomNavigationView=findViewById(R.id.navigation);
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        userId = bundle.getString("userId");
+        historyTripList = new ArrayList<TripDTO>();
+        historyTripsRecyclerView = findViewById(R.id.historyTripList);
+        bottomNavigationView = findViewById(R.id.navigation);
         floatingActionButton = findViewById(R.id.floatingActionButn);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -61,9 +71,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
             @Override
             public void onClick(View view) {
                 //action that floating button do
-                Intent intent=new Intent(getApplicationContext(), AddTrip.class);
-                Bundle bundle=new Bundle();
-                bundle.putString("userId",userId);
+                Intent intent = new Intent(getApplicationContext(), AddTrip.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 // Toast.makeText(HistoryActivity.this, "Hello from Floating Action Button", Toast.LENGTH_SHORT).show();
@@ -77,22 +87,23 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
         historyTripsRecyclerView.setLayoutManager(layoutManager);
 
         //history presenter
-        historyPresenter=new HistoryPresenterImpl(this,userId);
+        historyPresenter = new HistoryPresenterImpl(this, userId);
         historyPresenter.getHistoryTrips(historyTripList);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_home:
-                        Intent HomeIntent=new Intent(getApplicationContext(), HomeActivity.class);
-                        Bundle bundle=new Bundle();
-                        bundle.putString("userId",userId);
+                        Intent HomeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userId", userId);
                         HomeIntent.putExtras(bundle);
                         startActivity(HomeIntent);
                         return true;
                     case R.id.menu_map:
+
                         for(TripDTO trip : historyTripList){
                             LatLng latLng=new LatLng( trip.getlatLangTo().getLatitude(), trip.getlatLangTo().getLongitude());
 
@@ -114,23 +125,26 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
-                Bundle bundle =new Bundle();
-                bundle.putString("userId",userId);
-                if( menuItem.getItemId() == R.id.nav_history)
-                {
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                if (menuItem.getItemId() == R.id.nav_history) {
 //                    Intent intent = new Intent(HistoryActivity.this , HistoryActivity.class);
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
-                }
-                else if ( menuItem.getItemId() == R.id.nav_home)
-                {
-                    Intent intent = new Intent(HistoryActivity.this , HomeActivity.class);
+                } else if (menuItem.getItemId() == R.id.nav_home) {
+                    Intent intent = new Intent(HistoryActivity.this, HomeActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }
-                else if ( menuItem.getItemId() == R.id.nav_logout)
-                {
-                    Toast.makeText(HistoryActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
+                } else if (menuItem.getItemId() == R.id.nav_logout) {
+                    FirebaseAuth.getInstance().signOut();
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("firstTime", true);
+                    editor.commit();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+
+//                    Toast.makeText(HistoryActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -140,9 +154,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
 
     @Override
     public void showHistoryTrips(Context context, List<TripDTO> historyTripList) {
-        this.historyTripList=historyTripList;
-        historyTripsAdapter  = new historyTripsAdapter(this.historyTripList ,context,this.historyPresenter);
-      //  historyTripsAdapter  = new historyTripsAdapter(this.historyTripList ,context);
+        this.historyTripList = historyTripList;
+        historyTripsAdapter = new historyTripsAdapter(this.historyTripList, context, this.historyPresenter);
+        //  historyTripsAdapter  = new historyTripsAdapter(this.historyTripList ,context);
         historyTripsRecyclerView.setAdapter(historyTripsAdapter);
         System.out.println("Setting Adapter ");
         historyTripsAdapter.notifyDataSetChanged();

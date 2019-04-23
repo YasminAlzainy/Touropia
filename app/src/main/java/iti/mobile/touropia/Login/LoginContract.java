@@ -1,32 +1,23 @@
-/*
 package iti.mobile.touropia.Login;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public interface LoginContract {
-    interface LoginView {
-        void successLogin();
-
-        void failedLogin();
-
-        void emptyInput();
-
-
-    }
-    interface LoginModel{
-       void login(String email , String password);
-
-    }
-
     interface LoginPresenter {
-        void login(String email, String password);
+        void checkLogin(String email, String password, FirebaseAuth firebaseAuth);
 
         void successLogin();
 
-        void failedLogin();
-
-        void emptyInput();
-
+        void failLogin();
 
     }
 
+    interface LoginView {
+
+        void successLogin();
+
+        void failLogin();
+
+
+    }
 }
-*/

@@ -1,7 +1,6 @@
 package iti.mobile.touropia.Screens.Map;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -21,14 +20,18 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import iti.mobile.touropia.FloatNote;
 import iti.mobile.touropia.R;
 
 import com.google.maps.android.PolyUtil;
 //import com.google.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLng;
-
+import java.util.Date;
+import   java.util.Calendar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String LNG = "LNG";
@@ -41,13 +44,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        startService(new Intent(MapsActivity.this, FloatNote.class));
+        //finish();
     }
 
     private void setLat_Lng() {
@@ -89,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         com.google.maps.model.LatLng start = new com.google.maps.model.LatLng(startlatLng.latitude, startlatLng.longitude);
         com.google.maps.model.LatLng end = new com.google.maps.model.LatLng(endlatLng.latitude, endlatLng.longitude);
 
+       // SimpleDateFormat dateFormat = new SimpleDateFormat();
         try {
             result = DirectionsApi.newRequest(getGeoContext()).mode(
                     TravelMode.DRIVING).origin(start) //31.0413814,31.3478199)
