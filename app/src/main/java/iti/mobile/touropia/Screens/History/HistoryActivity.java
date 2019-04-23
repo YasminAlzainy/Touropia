@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import com.google.android.gms.maps.model.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Model.Network.TripData;
@@ -93,11 +93,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
                         startActivity(HomeIntent);
                         return true;
                     case R.id.menu_map:
-//                        for(TripDTO trip : historyTripList){
-//                            trip.getlatLangTo()
-//                        }
+                        for(TripDTO trip : historyTripList){
+                            LatLng latLng=new LatLng( trip.getlatLangTo().getLatitude(), trip.getlatLangTo().getLongitude());
+
+
+                        }
                         Intent MapIntent =new Intent(getApplicationContext(), MapsActivity.class);
-                       // MapIntent.putExtra("TripList", (Serializable) historyTripList);
+                       //yasmin
+
+                        MapIntent.putExtra("TripList", (Serializable) historyTripList);
                         startActivity(MapIntent);
                         return true;
                 }

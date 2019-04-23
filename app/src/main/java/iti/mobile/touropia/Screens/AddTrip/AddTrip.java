@@ -1,6 +1,8 @@
 package iti.mobile.touropia.Screens.AddTrip;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import iti.mobile.touropia.AlertReceiver;
 import iti.mobile.touropia.Model.Network.FirebaseConnection;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -193,8 +196,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
                         trip_time = hourOfDay + ":" + minute;
-                        myCalendar.set(Calendar.HOUR_OF_DAY, mHour);
-                        myCalendar.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        myCalendar.set(Calendar.MINUTE, minute- 1);
                         myCalendar.set(Calendar.SECOND, 59);
 
 
@@ -219,8 +222,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
                         trip_timeBack = hourOfDay + ":" + minute;
-                        myCalendarBack.set(Calendar.HOUR_OF_DAY, mHour);
-                        myCalendarBack.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendarBack.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        myCalendarBack.set(Calendar.MINUTE, minute - 1);
                         myCalendarBack.set(Calendar.SECOND, 59);
 
 
@@ -322,6 +325,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
                 mDatabase.child(id).setValue(tripDTO);
                 mDatabase.child(id + 1).setValue(tripDTOBack);
+                //aya Alarm Manager
+                startAlarm(myCalendar);
+                startAlarm(myCalendarBack);
+
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
@@ -340,6 +347,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
                 mDatabase.child(id).setValue(tripDTO);
+                //aya Alarm Manager
+                startAlarm(myCalendar);
+
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
                 Bundle bundle = new Bundle();
@@ -370,7 +380,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0) {
+            if (myCalendar.before(currentCalendar) ) {
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 
@@ -409,7 +419,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0 || myCalendarBack.compareTo(currentCalendar) <= 0) {
+            if (myCalendar.before(currentCalendar)  || myCalendarBack.before(currentCalendar)) {
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 
@@ -440,6 +450,17 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
         return validate;
+    }
+
+
+    private void startAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        //c.add(Calendar.DATE, 1);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
 
