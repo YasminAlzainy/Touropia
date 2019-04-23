@@ -21,6 +21,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     ArrayList<String> notes;
 
     public MyAdapter(Context context, ArrayList<String> notes) {
+
         this.context = context;
         this.notes = notes;
     }
