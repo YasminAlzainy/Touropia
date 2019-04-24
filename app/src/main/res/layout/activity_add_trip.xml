@@ -6,12 +6,14 @@
 
     android:layout_height="wrap_content">
 
+    <!---->
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0D3D4"
+        android:background="#BDC3C7"
         android:orientation="vertical"
         tools:context=".AddTrip.AddTrip">
 
@@ -20,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:background="#FFFBE6"
+
             android:orientation="vertical">
 
 
@@ -30,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
                 android:layout_marginRight="15dp"
 
                 android:elevation="6dp"
@@ -133,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginRight="15dp"
                 android:elevation="6dp"
                 app:cardCornerRadius="20dp">
@@ -159,7 +160,7 @@
                         android:id="@+id/btn_time"
                         android:layout_width="wrap_content"
                         android:layout_height="80dp"
-                        android:background="@mipmap/time"
+                        android:background="@mipmap/alarm"
                         android:onClick="time"
 
                         />
@@ -270,7 +271,7 @@
                         android:id="@+id/btn_timeBack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/time"
+                        android:background="@mipmap/alarm"
                         android:onClick="getTimeBack"
 
                         />
@@ -290,7 +291,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginRight="15dp"
                 android:elevation="6dp"
                 app:cardCornerRadius="20dp">
@@ -322,7 +323,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="3dp"
                             android:onClick="addNote"
-                            android:src="@drawable/add_note_24dp" />
+                            android:src="@mipmap/noteicon" />
                     </LinearLayout>
 
 
@@ -344,13 +345,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/addtrip_button"
                 android:onClick="addTrip"
                 android:text="Add Trip "
-                android:textColor="@color/white" />
+                android:textColor="#F9AA33"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </LinearLayout>

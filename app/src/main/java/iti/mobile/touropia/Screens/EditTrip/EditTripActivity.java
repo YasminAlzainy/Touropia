@@ -78,7 +78,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
+        setContentView(R.layout.activity_edit_trip);
         tripDTO = new TripDTO();
       /*  Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
@@ -92,7 +92,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         trip = (TripDTO) intent.getSerializableExtra("Trip");
         key = intent.getStringExtra("key");
 
-        System.out.println("EditTrip" + trip.getTrip_name());
+
 
         //create object
         presenter = new EditPresenterImpl(userId);
@@ -358,7 +358,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public void addTrip(View view) {
+    public void editTrip(View view) {
 
         if (roundTrip) {
             if (ValidateDataRound()) {
@@ -391,6 +391,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
                 //FirebaseDatabase database = FirebaseConnection.getConnection();
                 //mDatabase = database.getReference("trips").child(userId);
                 //mDatabase.child(id).setValue(tripDTO);
+                presenter.EditTrip(tripDTO, key);
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 Bundle bundle = new Bundle();
@@ -414,8 +415,54 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         //note = trip_note.getText().toString();
         tripDTO.setTrip_status(true);
         boolean validate;
+        tripDTO.setTrip_name(trip_Name);
+        if (from != null) {
+            tripDTO.setTrip_start_point(from);
 
-        if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null) {
+        } else {
+            tripDTO.setTrip_start_point(trip.getTrip_start_point());
+        }
+
+        if (to != null) {
+            tripDTO.setTrip_end_point(to);
+
+        } else {
+            tripDTO.setTrip_end_point(trip.getTrip_start_point());
+        }
+        if (latLangFrom != null) {
+            tripDTO.setlatLangFrom(latLangFrom);
+
+        } else {
+            tripDTO.setlatLangFrom(trip.getLatLangFrom());
+        }
+        if (latLangTo != null) {
+            tripDTO.setlatLangTo(latLangTo);
+
+        } else {
+            tripDTO.setlatLangTo(trip.getlatLangTo());
+        }
+
+        if (trip_time != null) {
+            tripDTO.setTrip_time(trip_time);
+
+        } else {
+            tripDTO.setTrip_time(trip.getTrip_time());
+
+        }
+
+        if (trip_date != null) {
+            tripDTO.setTrip_date(trip_date);
+
+        } else {
+            tripDTO.setTrip_date(trip.getTrip_date());
+
+        }
+
+
+
+
+
+  /*      if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null) {
             validate = false;
 
 
@@ -438,9 +485,9 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
             }
 
         }
-
-
-        return validate;
+*/
+////////////////////////////////////
+        return true;
     }
 
 

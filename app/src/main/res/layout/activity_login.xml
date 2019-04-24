@@ -130,7 +130,7 @@
                 android:onClick="checklogin"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="#F9AA33"
                 android:textSize="20dp"
 
 
@@ -145,7 +145,7 @@
                 android:onClick="registeruser"
                 android:text="Register here"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="#F9AA33"
                 android:textSize="20dp" />
         </LinearLayout>
 

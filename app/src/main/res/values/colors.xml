@@ -16,12 +16,6 @@
     <color name="editTextBG">#DADADA</color>
     <color name="textColor">#FD5523</color>
     <color name="base">#007af2</color>
-    <color name="list_item_indicator_enabled_dark">@color/white</color>
-    <color name="mdtp_accent_color">#009688</color>
-    <color name="mdtp_accent_color_dark">#00796b</color>
-    <color name="bg">#808000</color>
-    <color name="linear">#4A6572</color>
-    <color name="yellow">#FFDE03</color>
     <color name="icons">#0336FF</color>
     <color name="black">#000000</color>
 

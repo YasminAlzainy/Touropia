@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 //import iti.mobile.touropia.AddTrip.AddTrip;
 //import iti.mobile.touropia.MainActivity;
+import iti.mobile.touropia.Login.LoginActivity;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
@@ -50,12 +51,20 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     }
 
+    public void login(View view) {
+        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+        startActivity(intent);
+        CustomIntent.customType(RegistrationActivity.this, "right-to-left");
+
+
+    }
+
     void registerUser() {
         email = edtemailregister.getText().toString();
         password = edtpasswordregister.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
 
-         presenter.checkRegistration(email,password,mAuth);
+            presenter.checkRegistration(email, password, mAuth);
         } else {
             Toast.makeText(this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
         }
