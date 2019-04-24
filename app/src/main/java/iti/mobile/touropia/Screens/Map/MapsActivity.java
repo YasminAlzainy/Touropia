@@ -3,6 +3,7 @@ package iti.mobile.touropia.Screens.Map;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,24 +21,29 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import iti.mobile.touropia.FloatNote;
+import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
 import com.google.maps.android.PolyUtil;
 //import com.google.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
-import   java.util.Calendar;
+import java.util.Calendar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String LNG = "LNG";
     private static final String LAT = "LAT";
     private GoogleMap mMap;
-    private double location_lat, location_lng;
+    private double location_lat_from, location_lng_from, location_lat_to, location_lng_to;
+    private List<TripDTO> historyTripList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +61,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //finish();
     }
 
-    private void setLat_Lng() {
-        location_lat = getIntent().getDoubleExtra(LAT, 31.0413814);
-        location_lng = getIntent().getDoubleExtra(LNG, 31.3478199);
+    private void setLat_Lng(int tripIndex ) {
+        location_lat_from = historyTripList.get(tripIndex).getLatLangFrom().getLatitude();
+        location_lng_from = historyTripList.get(tripIndex).getLatLangFrom().getLongitude();
+        Log.i("tag", String.valueOf(location_lat_from) + " , " + String.valueOf(location_lng_from));
+
+        location_lat_to = historyTripList.get(tripIndex).getlatLangTo().getLatitude();
+        location_lng_to = historyTripList.get(tripIndex).getLatLangFrom().getLongitude();
+        Log.i("tag", String.valueOf(location_lat_to) + " , " + String.valueOf(location_lng_to));
     }
 
     private GeoApiContext getGeoContext() {
@@ -70,15 +81,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        setLat_Lng();
 
-        LatLng startlatLng = new LatLng(location_lat, location_lng);
-        LatLng endlatLng = new LatLng(30.0711192, 31.0185634);
+        historyTripList =  (ArrayList<TripDTO>) getIntent().getSerializableExtra("TripList");
+        for (int i = 0 ; i < historyTripList.size() ; i++)
+        {
+            setLat_Lng(i);
+            LatLng startlatLng = new LatLng(location_lat_from, location_lng_from);
+            LatLng endlatLng = new LatLng(location_lat_to, location_lng_to);
 
-        //googleMap.addPolyline( new PolylineOptions().add(startlatLng , endlatLng).width(5));
+            //googleMap.addPolyline( new PolylineOptions().add(startlatLng , endlatLng).width(5));
 
-        markePoints(startlatLng, endlatLng);
-        drawRoute(startlatLng, endlatLng);
+            markePoints(startlatLng, endlatLng);
+            drawRoute(startlatLng, endlatLng);
+        }
+
+
     }
 
     private void markePoints(LatLng startlatLng, LatLng endlatLng) {
@@ -94,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         com.google.maps.model.LatLng start = new com.google.maps.model.LatLng(startlatLng.latitude, startlatLng.longitude);
         com.google.maps.model.LatLng end = new com.google.maps.model.LatLng(endlatLng.latitude, endlatLng.longitude);
 
-       // SimpleDateFormat dateFormat = new SimpleDateFormat();
+        // SimpleDateFormat dateFormat = new SimpleDateFormat();
         try {
             result = DirectionsApi.newRequest(getGeoContext()).mode(
                     TravelMode.DRIVING).origin(start) //31.0413814,31.3478199)
@@ -107,8 +124,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
 
-        List<LatLng> decodePath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
-        mMap.addPolyline(new PolylineOptions().addAll(decodePath));
+
+
+            List<LatLng> decodePath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
+            mMap.addPolyline(new PolylineOptions().addAll(decodePath));
+
+
+
     }
 
 
