@@ -3,7 +3,9 @@ package iti.mobile.touropia.Screens.Home;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import iti.mobile.touropia.FloatNote;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
@@ -121,4 +124,11 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
         upcommingTripsAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
+            startService(new Intent(HomeActivity.this, FloatNote.class));
+        }
+    }
 }

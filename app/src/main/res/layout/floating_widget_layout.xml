@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <com.andremion.counterfab.CounterFab>
 
     <RelativeLayout
         android:id="@+id/MainParentRelativeLayout"
@@ -63,4 +64,5 @@
 
         </LinearLayout>
     </RelativeLayout>
+    </com.andremion.counterfab.CounterFab>
 </FrameLayout>
