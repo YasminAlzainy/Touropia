@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import iti.mobile.touropia.FloatNote;
 import iti.mobile.touropia.Screens.EditTrip.EditTripActivity;
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
@@ -116,9 +117,11 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                     return true;
                                 case R.id.Start:
                                     //Toast.makeText(tripMenuButton.getContext(), "Start", Toast.LENGTH_SHORT).show();
-                                    Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr="+source.getLatitude()+","+source.getLongitude()+"&daddr="+Destination.getLatitude()+","+Destination.getLongitude()));
+                                    Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                                            Uri.parse("http://maps.google.com/maps?saddr="+source.getLatitude()+","+source.getLongitude()+"&daddr="+Destination.getLatitude()+","+Destination.getLongitude()) );
                                     trip.setTrip_status(false);
                                     presenter.EditTrip(trip,Position);
+                                    context.startService(new Intent(context, FloatNote.class));
                                     context.startActivity(MapIntent);
                                     return true;
                                 case R.id.Notes:
@@ -132,14 +135,11 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                     return true;
                                 case R.id.Edit:
                                     Intent EditIntent=new Intent( context, EditTripActivity.class);
-
                                     EditIntent.putExtra("userId",presenter.getUserId());
                                     EditIntent.putExtra("Trip", trip);
-                                    EditIntent.putExtra("key",presenter.getKeys().get(Position));
-
+                                   // EditIntent.putExtra("key",presenter.getKeys().get(Position));
                                     context.startActivity(EditIntent);
                                     //Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
-
                                     return true;
                                 default:
                                     return false;

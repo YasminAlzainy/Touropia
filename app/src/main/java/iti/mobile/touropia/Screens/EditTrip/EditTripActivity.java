@@ -67,7 +67,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
     //private DatabaseReference mDatabase;
     String userId;
     private TripDTO trip;
-    private String key;
+    private String key;   //no need
 
     private EditPresenterImpl presenter;
 
@@ -90,9 +90,9 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
 
         userId = intent.getStringExtra("userId");
         trip = (TripDTO) intent.getSerializableExtra("Trip");
-        key = intent.getStringExtra("key");
+       // key = intent.getStringExtra("key");
 
-
+        System.out.println("EditTrip" + trip.getTrip_name());
 
         //create object
         presenter = new EditPresenterImpl(userId);
@@ -117,6 +117,10 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
 //-----------------------
         //set values to be edited
         tripName.setText(trip.getTrip_name());   //object trip
+        latLangFrom=trip.getLatLangFrom();
+        latLangTo=trip.getlatLangTo();
+        tripDTO.setKey(trip.getKey());
+
       /*  if (trip.getTrip_note() != null) {
             trip_note.setText(trip.getTrip_note().indexOf(1));
         }*/
@@ -358,7 +362,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public void editTrip(View view) {
+    public void EditTrip(View view) {
 
         if (roundTrip) {
             if (ValidateDataRound()) {
@@ -371,9 +375,9 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
                 // mDatabase.child(id + 1).setValue(tripDTOBack);
 
                 //calling EditFunction in EditPresenterImpl
-                presenter.EditTrip(tripDTO, key);
+                presenter.EditTrip(tripDTO);
 
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, " Your Trip Edited successfully ", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
@@ -391,8 +395,11 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
                 //FirebaseDatabase database = FirebaseConnection.getConnection();
                 //mDatabase = database.getReference("trips").child(userId);
                 //mDatabase.child(id).setValue(tripDTO);
-                presenter.EditTrip(tripDTO, key);
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+
+                //Edit
+                presenter.EditTrip(tripDTO);
+                Toast.makeText(this, " Your Trip Edited successfully ", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("userId", userId);
@@ -509,7 +516,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0 || myCalendarBack.compareTo(currentCalendar) <= 0) {
+            if (myCalendar.before(currentCalendar)  || myCalendarBack.before(currentCalendar)) {
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 

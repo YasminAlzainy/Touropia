@@ -1,4 +1,4 @@
-package iti.mobile.touropia;
+package iti.mobile.touropia.Screens.Alert;
 
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+
+import iti.mobile.touropia.R;
 
 
 public class NotificationHelper extends ContextWrapper {
@@ -39,8 +41,8 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification() {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.")
+                .setContentTitle("Trip")
+                .setContentText("Don't forget about your Trip today.")
                 .setSmallIcon(R.drawable.ic_launcher_background);  //need notification Image
     }
 }

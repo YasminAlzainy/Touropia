@@ -11,7 +11,7 @@ public interface Editcontact {
     }
     interface EditPresenter{
 
-        void EditTrip(TripDTO editedTrip,String key);
+        void EditTrip(TripDTO editedTrip);
 
     }
 }
