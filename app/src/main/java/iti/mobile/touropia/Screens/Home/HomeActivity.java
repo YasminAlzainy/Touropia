@@ -2,6 +2,7 @@ package iti.mobile.touropia.Screens.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -17,9 +18,12 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import iti.mobile.touropia.FloatNote;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +43,18 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private String userId;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    boolean isFirst;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.UpcommingTrips);
         setContentView(R.layout.activity_home);
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         upcommingTripsList = new ArrayList<TripDTO>();
@@ -67,7 +77,13 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
                 } else if (menuItem.getItemId() == R.id.nav_logout) {
-                    Toast.makeText(HomeActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("firstTime", true);
+                    editor.commit();
+                    finish();
+
+                    //Toast.makeText(HomeActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -116,4 +132,3 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
         }
     }
 }
-

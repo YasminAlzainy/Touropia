@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class TripDTO implements Serializable{
+public class TripDTO implements Serializable {
 
     private String trip_name;
     private List<String> trip_note;
@@ -14,32 +14,16 @@ public class TripDTO implements Serializable{
     private String trip_end_point;
     private LatLng latLangFrom;
     private LatLng latLangTo;
-    private String trip_date;
-    private String trip_time;
+
     private Integer trip_rounded;
     private boolean trip_status;
     private String repeate;
+    private String trip_date;
+    private String trip_time;
 
     public TripDTO() {
     }
-/*
 
-    public TripDTO(String trip_name, String trip_start_point, String trip_end_point,
-                   LatLng latLangFrom, LatLng latLangTo, String trip_date, String trip_time, Integer trip_rounded, boolean trip_status, String repeate) {
-
-        this.trip_name = trip_name;
-        this.trip_start_point = trip_start_point;
-        this.trip_end_point = trip_end_point;
-        this.latLangFrom = latLangFrom;
-        this.latLangTo = latLangTo;
-        this.trip_date = trip_date;
-        this.trip_time = trip_time;
-        this.trip_rounded = trip_rounded;
-        this.trip_status = trip_status;
-        this.repeate = repeate;
-    }
-
-*/
 
     public TripDTO(String trip_name, List<String> trip_note, String trip_start_point, String trip_end_point, LatLng latLangFrom,
                    LatLng latLangTo, String trip_date, String trip_time, Integer trip_rounded, boolean trip_status, String repeate) {
@@ -122,14 +106,6 @@ public class TripDTO implements Serializable{
         this.trip_time = trip_time;
     }
 
-    public Integer getTrip_rounded() {
-        return trip_rounded;
-    }
-
-    public void setTrip_rounded(Integer trip_rounded) {
-        this.trip_rounded = trip_rounded;
-    }
-
     public boolean getTrip_status() {
         return trip_status;
     }
@@ -138,12 +114,21 @@ public class TripDTO implements Serializable{
         this.trip_status = trip_status;
     }
 
+
+    public void setRepeate(String repeate) {
+        this.repeate = repeate;
+    }
+
     public String getRepeate() {
         return repeate;
     }
 
-    public void setRepeate(String repeate) {
-        this.repeate = repeate;
+    public Integer getTrip_rounded() {
+        return trip_rounded;
+    }
+
+    public void setTrip_rounded(Integer trip_rounded) {
+        this.trip_rounded = trip_rounded;
     }
 
 

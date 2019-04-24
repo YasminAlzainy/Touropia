@@ -1,6 +1,8 @@
 package iti.mobile.touropia.Registration;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,17 +19,27 @@ import com.google.firebase.auth.FirebaseUser;
 //import iti.mobile.touropia.MainActivity;
 import iti.mobile.touropia.R;
 import iti.mobile.touropia.Screens.AddTrip.AddTrip;
+import iti.mobile.touropia.Screens.Home.HomeActivity;
+import maes.tech.intentanim.CustomIntent;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity implements RegistrationContract.RegistrationnView {
 
     EditText edtemailregister, edtpasswordregister;
     String email, password;
     private FirebaseAuth mAuth;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    boolean isFirst;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    RegistrationContract.RegistrationPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_main);
+        presenter = new RegistrationPresenterImpl(this);
+
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         edtemailregister = (EditText) findViewById(R.id.edtemailregister);
         edtpasswordregister = (EditText) findViewById(R.id.edtpasswordregister);
@@ -43,21 +55,7 @@ public class RegistrationActivity extends AppCompatActivity {
         password = edtpasswordregister.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
 
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-
-                        Intent intent = new Intent(RegistrationActivity.this, AddTrip.class);
-                                              startActivity(intent);
-
-                        Toast.makeText(RegistrationActivity.this, "Registeration done", Toast.LENGTH_SHORT).show();
-
-
-                    } else
-                        Toast.makeText(RegistrationActivity.this, "Registeration Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
+         presenter.checkRegistration(email,password,mAuth);
         } else {
             Toast.makeText(this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
         }
@@ -69,4 +67,25 @@ public class RegistrationActivity extends AppCompatActivity {
         FirebaseUser currentuser = mAuth.getCurrentUser();
     }
 
+    @Override
+    public void successRegistration() {
+        Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", mAuth.getCurrentUser().getUid());
+        intent.putExtras(bundle);
+        editor = sharedPreferences.edit();
+        editor.putBoolean("firstTime", false);
+        editor.commit();
+        startActivity(intent);
+        CustomIntent.customType(RegistrationActivity.this, "right-to-left");
+
+
+    }
+
+    @Override
+    public void failRegistration() {
+
+        Toast.makeText(this, "Please enter valid email and password", Toast.LENGTH_SHORT).show();
+
+    }
 }

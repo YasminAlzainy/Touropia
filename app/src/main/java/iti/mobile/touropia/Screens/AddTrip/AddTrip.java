@@ -1,19 +1,26 @@
 package iti.mobile.touropia.Screens.AddTrip;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -31,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import iti.mobile.touropia.AlertReceiver;
 import iti.mobile.touropia.Model.Network.FirebaseConnection;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -53,6 +61,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     String trip_dateBack;
     boolean roundTrip = false;
     ArrayList<String> note;
+    MyAdapter adapter;
+    RecyclerView recyclerView;
     Calendar currentCalendar;
     Calendar myCalendar;
     Calendar myCalendarBack;
@@ -84,20 +94,21 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         myCalendar = Calendar.getInstance();
         myCalendarBack = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
-        note = new ArrayList<>();
+        recyclerView = findViewById(R.id.notesRecyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AddTrip.this));
         btnDatePicker = findViewById(R.id.btn_date);
         btnTimePicker = findViewById(R.id.btn_time);
         btnDatePickerBack = findViewById(R.id.btn_dateBack);
         btnTimePickerBack = findViewById(R.id.btn_timeBack);
-
         trip_note = findViewById(R.id.note);
         tripName = findViewById(R.id.name);
         round = findViewById(R.id.round);
-        final LinearLayout layout = findViewById(R.id.linearBack);
-
+        final CardView layout = findViewById(R.id.linearBack);
+        note = new ArrayList<String>();
+        adapter = new MyAdapter(this, note);
+        recyclerView.setAdapter(adapter);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
         round.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -153,7 +164,6 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment_to);
         autocompleteFragment_to.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         autocompleteFragment_to.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -193,8 +203,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
                         trip_time = hourOfDay + ":" + minute;
-                        myCalendar.set(Calendar.HOUR_OF_DAY, mHour);
-                        myCalendar.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+
+                        myCalendar.set(Calendar.MINUTE, minute- 1);
                         myCalendar.set(Calendar.SECOND, 59);
 
 
@@ -219,8 +230,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
                         trip_timeBack = hourOfDay + ":" + minute;
-                        myCalendarBack.set(Calendar.HOUR_OF_DAY, mHour);
-                        myCalendarBack.set(Calendar.MINUTE, mMinute - 1);
+                        myCalendarBack.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        myCalendarBack.set(Calendar.MINUTE, minute - 1);
                         myCalendarBack.set(Calendar.SECOND, 59);
 
 
@@ -298,17 +309,15 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
     public void addNote(View view) {
-        String stringNote;
-        stringNote = trip_note.getText().toString();
-        if (stringNote.matches("")) {
-            Toast.makeText(this, "please add note first to add another one ", Toast.LENGTH_SHORT).show();
 
-        } else {
+        String stringNote = trip_note.getText().toString();
+        if (!stringNote.matches("")) {
+            recyclerView.setVisibility(View.VISIBLE);
             note.add(stringNote);
+            adapter.notifyDataSetChanged();
             trip_note.setText("");
-            Toast.makeText(this, "your note is added .. add another one if you want ", Toast.LENGTH_SHORT).show();
-
         }
+
     }
 
     public void addTrip(View view) {
@@ -322,6 +331,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
                 mDatabase.child(id).setValue(tripDTO);
                 mDatabase.child(id + 1).setValue(tripDTOBack);
+                //aya Alarm Manager
+                startAlarm(myCalendar);
+                startAlarm(myCalendarBack);
+
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
@@ -340,6 +353,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
                 mDatabase.child(id).setValue(tripDTO);
+                //aya Alarm Manager
+                startAlarm(myCalendar);
+
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
                 Bundle bundle = new Bundle();
@@ -370,7 +386,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0) {
+
+            if (myCalendar.before(Calendar.getInstance())) {
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 
@@ -409,7 +426,8 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0 || myCalendarBack.compareTo(currentCalendar) <= 0) {
+            if (myCalendar.before(currentCalendar)  || myCalendarBack.before(currentCalendar)) {
+
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 
@@ -440,6 +458,17 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
 
 
         return validate;
+    }
+
+
+    private void startAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        //c.add(Calendar.DATE, 1);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
 

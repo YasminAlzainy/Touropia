@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "iti.mobile.touropia"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         multiDexEnabled true
         versionCode 1

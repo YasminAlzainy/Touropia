@@ -67,7 +67,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
 //        Glide.with(context)
 //                .load(List.get(position).getFlag())
 //                .into(holder.countryFlagImageView);
-    }
+  }
 
     @Override
     public int getItemCount() {
