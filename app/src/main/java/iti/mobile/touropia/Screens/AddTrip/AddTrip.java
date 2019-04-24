@@ -14,13 +14,10 @@ import android.view.View;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import iti.mobile.touropia.AlertReceiver;
+import iti.mobile.touropia.Screens.Alert.AlertReceiver;
 import iti.mobile.touropia.Model.Network.FirebaseConnection;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -464,11 +461,24 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     private void startAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
+
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("AlertTrip",tripDTO);
+        bundle.putString("userId",userId);
+        bundle.putDouble("latitudeFrom",tripDTO.getLatLangFrom().getLatitude());
+        bundle.putDouble("latitudeTo",tripDTO.getlatLangTo().getLatitude());
+        bundle.putDouble("langFrom",tripDTO.getLatLangFrom().getLongitude());
+        bundle.putDouble("langTo",tripDTO.getlatLangTo().getLongitude());
+
+        intent.putExtras(bundle);
+
+        // intent.putExtra("AlertTrip",tripDTO);
+        //System.out.println("Latitiude in add "+tripDTO.getLatLangFrom().getLatitude());
+        //intent.putExtra("userId",userId);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-        //c.add(Calendar.DATE, 1);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
     }
 
 

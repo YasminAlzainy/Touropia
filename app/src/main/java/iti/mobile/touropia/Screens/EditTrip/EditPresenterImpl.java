@@ -12,8 +12,8 @@ public class EditPresenterImpl implements Editcontact.EditPresenter {
     }
 
     @Override
-    public void EditTrip(TripDTO editedTrip, String key) {
+    public void EditTrip(TripDTO editedTrip) {
         GetUpcommingTrips upcommingTrips=new GetUpcommingTrips(userId);
-        upcommingTrips.editTrip(editedTrip,key);
+        upcommingTrips.editTrip(editedTrip,editedTrip.getKey());
     }
 }

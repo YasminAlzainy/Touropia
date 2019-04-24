@@ -67,7 +67,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
     //private DatabaseReference mDatabase;
     String userId;
     private TripDTO trip;
-    private String key;
+    private String key;   //no need
 
     private EditPresenterImpl presenter;
 
@@ -78,7 +78,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
+        setContentView(R.layout.activity_edit_trip);
         tripDTO = new TripDTO();
       /*  Spinner repeatSpinner = findViewById(R.id.reapetSpinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.Repeated, android.R.layout.simple_spinner_item);
@@ -90,7 +90,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
 
         userId = intent.getStringExtra("userId");
         trip = (TripDTO) intent.getSerializableExtra("Trip");
-        key = intent.getStringExtra("key");
+       // key = intent.getStringExtra("key");
 
         System.out.println("EditTrip" + trip.getTrip_name());
 
@@ -117,6 +117,10 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
 //-----------------------
         //set values to be edited
         tripName.setText(trip.getTrip_name());   //object trip
+        latLangFrom=trip.getLatLangFrom();
+        latLangTo=trip.getlatLangTo();
+        tripDTO.setKey(trip.getKey());
+
       /*  if (trip.getTrip_note() != null) {
             trip_note.setText(trip.getTrip_note().indexOf(1));
         }*/
@@ -358,7 +362,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public void addTrip(View view) {
+    public void EditTrip(View view) {
 
         if (roundTrip) {
             if (ValidateDataRound()) {
@@ -371,9 +375,9 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
                 // mDatabase.child(id + 1).setValue(tripDTOBack);
 
                 //calling EditFunction in EditPresenterImpl
-                presenter.EditTrip(tripDTO, key);
+                presenter.EditTrip(tripDTO);
 
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, " Your Trip Edited successfully ", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
@@ -391,7 +395,11 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
                 //FirebaseDatabase database = FirebaseConnection.getConnection();
                 //mDatabase = database.getReference("trips").child(userId);
                 //mDatabase.child(id).setValue(tripDTO);
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+
+                //Edit
+                presenter.EditTrip(tripDTO);
+                Toast.makeText(this, " Your Trip Edited successfully ", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("userId", userId);
@@ -414,8 +422,54 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         //note = trip_note.getText().toString();
         tripDTO.setTrip_status(true);
         boolean validate;
+        tripDTO.setTrip_name(trip_Name);
+        if (from != null) {
+            tripDTO.setTrip_start_point(from);
 
-        if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null) {
+        } else {
+            tripDTO.setTrip_start_point(trip.getTrip_start_point());
+        }
+
+        if (to != null) {
+            tripDTO.setTrip_end_point(to);
+
+        } else {
+            tripDTO.setTrip_end_point(trip.getTrip_start_point());
+        }
+        if (latLangFrom != null) {
+            tripDTO.setlatLangFrom(latLangFrom);
+
+        } else {
+            tripDTO.setlatLangFrom(trip.getLatLangFrom());
+        }
+        if (latLangTo != null) {
+            tripDTO.setlatLangTo(latLangTo);
+
+        } else {
+            tripDTO.setlatLangTo(trip.getlatLangTo());
+        }
+
+        if (trip_time != null) {
+            tripDTO.setTrip_time(trip_time);
+
+        } else {
+            tripDTO.setTrip_time(trip.getTrip_time());
+
+        }
+
+        if (trip_date != null) {
+            tripDTO.setTrip_date(trip_date);
+
+        } else {
+            tripDTO.setTrip_date(trip.getTrip_date());
+
+        }
+
+
+
+
+
+  /*      if (trip_Name.matches("") || from == null || to == null || trip_time == null || trip_date == null) {
             validate = false;
 
 
@@ -438,9 +492,9 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
             }
 
         }
-
-
-        return validate;
+*/
+////////////////////////////////////
+        return true;
     }
 
 
@@ -462,7 +516,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         } else {
 
 
-            if (myCalendar.compareTo(currentCalendar) <= 0 || myCalendarBack.compareTo(currentCalendar) <= 0) {
+            if (myCalendar.before(currentCalendar)  || myCalendarBack.before(currentCalendar)) {
                 validate = false;
                 Toast.makeText(this, "cannot insert passed time", Toast.LENGTH_SHORT).show();
 

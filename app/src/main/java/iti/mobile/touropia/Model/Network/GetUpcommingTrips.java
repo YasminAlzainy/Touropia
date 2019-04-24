@@ -60,6 +60,7 @@ public class GetUpcommingTrips {
                     if(trip.getTrip_status()){
                         upcommingTripList.add(trip);
                         upcommingKeys.add(snapshot.getKey()); //to store unique key on firebase for each trip
+                        trip.setKey(snapshot.getKey());
                     }
                 }
 

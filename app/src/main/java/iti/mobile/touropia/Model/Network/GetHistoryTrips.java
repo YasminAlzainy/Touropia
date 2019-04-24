@@ -51,6 +51,7 @@ public class GetHistoryTrips {
                     if(!trip.getTrip_status()){
                         historyTripList.add(trip);
                         Historykeys.add(snapshot.getKey());
+                        trip.setKey(snapshot.getKey());
                     }
                 }
                 //notify Adapter with changes

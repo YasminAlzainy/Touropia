@@ -132,14 +132,11 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                     return true;
                                 case R.id.Edit:
                                     Intent EditIntent=new Intent( context, EditTripActivity.class);
-
                                     EditIntent.putExtra("userId",presenter.getUserId());
                                     EditIntent.putExtra("Trip", trip);
-                                    EditIntent.putExtra("key",presenter.getKeys().get(Position));
-
+                                   // EditIntent.putExtra("key",presenter.getKeys().get(Position));
                                     context.startActivity(EditIntent);
                                     //Toast.makeText(tripMenuButton.getContext(), "Edit", Toast.LENGTH_SHORT).show();
-
                                     return true;
                                 default:
                                     return false;

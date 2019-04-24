@@ -20,6 +20,9 @@ public class TripDTO implements Serializable {
     private String repeate;
     private String trip_date;
     private String trip_time;
+    private String Key;
+
+
 
     public TripDTO() {
     }
@@ -131,5 +134,12 @@ public class TripDTO implements Serializable {
         this.trip_rounded = trip_rounded;
     }
 
+    public String getKey() {
+        return Key;
+    }
+
+    public void setKey(String key) {
+        Key = key;
+    }
 
 }
