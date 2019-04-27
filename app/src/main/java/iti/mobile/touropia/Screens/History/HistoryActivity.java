@@ -111,7 +111,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryContact
                         }
                         Intent MapIntent =new Intent(getApplicationContext(), MapsActivity.class);
                         //historyTripList.add(new TripDTO("Test", null ,null , null , new LatLng(30.0632299 ,31.2447482) , new LatLng(31.0413814,31.3478199) ,null , null , null , true , null));
-                        historyTripList.add(new TripDTO("Test", null ,null , null , new LatLng(30.1127092,31.3976671) , new LatLng(30.0270224,31.3942907) ,null , null , null , true , null));
+                        //historyTripList.add(new TripDTO("Test", null ,null , null , new LatLng(30.1127092,31.3976671) , new LatLng(30.0270224,31.3942907) ,null , null , null , true , null));
                         //historyTripList.add(new TripDTO("Test", null ,null , null , new LatLng() , new LatLng() ,null , null , null , true , null));
 
                         MapIntent.putExtra("TripList", (Serializable) historyTripList);

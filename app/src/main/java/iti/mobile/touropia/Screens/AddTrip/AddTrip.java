@@ -31,6 +31,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -323,11 +324,14 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             if (ValidateDataRound()) {
 
                 String id = mDatabase.push().getKey();
+
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
 
                 mDatabase.child(id).setValue(tripDTO);
                 mDatabase.child(id + 1).setValue(tripDTOBack);
+                tripDTO.setKey(id); //aya
+                tripDTOBack.setKey(id+1);  //aya
                 //aya Alarm Manager
                 startAlarm(myCalendar);
                 startAlarm(myCalendarBack);
@@ -347,10 +351,12 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             if (ValidateData()) {
 
                 String id = mDatabase.push().getKey();
+
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
                 mDatabase.child(id).setValue(tripDTO);
                 //aya Alarm Manager
+                tripDTO.setKey(id); //aya
                 startAlarm(myCalendar);
 
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
@@ -462,19 +468,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
 
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("AlertTrip",tripDTO);
-        bundle.putString("userId",userId);
-        bundle.putDouble("latitudeFrom",tripDTO.getLatLangFrom().getLatitude());
-        bundle.putDouble("latitudeTo",tripDTO.getlatLangTo().getLatitude());
-        bundle.putDouble("langFrom",tripDTO.getLatLangFrom().getLongitude());
-        bundle.putDouble("langTo",tripDTO.getlatLangTo().getLongitude());
-
-        intent.putExtras(bundle);
-
-        // intent.putExtra("AlertTrip",tripDTO);
-        //System.out.println("Latitiude in add "+tripDTO.getLatLangFrom().getLatitude());
-        //intent.putExtra("userId",userId);
+        Bundle args = new Bundle();
+        args.putSerializable("obj",(Serializable)tripDTO);
+        args.putString("userId",userId);
+        intent.putExtra("DATA",args);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
