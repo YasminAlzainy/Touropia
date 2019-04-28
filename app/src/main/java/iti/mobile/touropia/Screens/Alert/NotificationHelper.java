@@ -49,7 +49,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Trip")
                 .setContentText("Don't forget about your Trip today.")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.alarm)
                 .setContentIntent(pendingIntent);  //need notification Image
 
 

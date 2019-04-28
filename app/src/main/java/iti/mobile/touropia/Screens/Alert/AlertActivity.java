@@ -13,14 +13,12 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.Calendar;
 
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
+import iti.mobile.touropia.Screens.AddTrip.AddTrip;
 import iti.mobile.touropia.Screens.EditTrip.EditPresenterImpl;
 import iti.mobile.touropia.Screens.EditTrip.Editcontact;
 import iti.mobile.touropia.Screens.Home.HomeContact;
@@ -32,7 +30,7 @@ public class AlertActivity extends AppCompatActivity {
     private Editcontact.EditPresenter presenter;
     private String userId;
     private TripDTO currentTrip;
-    private String tripKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +68,7 @@ public class AlertActivity extends AppCompatActivity {
                         MapIntent.setPackage("com.google.android.apps.maps");
                         currentTrip.setTrip_status(false);
                         presenter.EditTrip(currentTrip);
+                        AddTrip.requestCode[ bundle.getInt("requestcode")]=0;
                         startActivity(MapIntent);
                         ringTone.stop();
                     }
@@ -77,9 +76,10 @@ public class AlertActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), bundle.getInt("requestcode"), intent, 0);
                         alarmManager.cancel(pendingIntent);
                         //dialog.dismiss();
                         currentTrip.setTrip_status(false);
