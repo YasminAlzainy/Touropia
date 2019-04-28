@@ -15,6 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.io.Serializable;
+import java.util.Calendar;
+
 import iti.mobile.touropia.Model.Network.LatLng;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
@@ -61,9 +64,12 @@ public class AlertActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "START",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr="+latfrom+","+langfrom+"&daddr="+latTo+","+langto));
-                         currentTrip.setTrip_status(false);
-                         presenter.EditTrip(currentTrip);
+
+                        //Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps/dir?saddr="+latfrom+","+langfrom+"&daddr="+latTo+","+langto));
+                       Intent MapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q="+latTo+","+langto));
+                        MapIntent.setPackage("com.google.android.apps.maps");
+                        currentTrip.setTrip_status(false);
+                        presenter.EditTrip(currentTrip);
                         startActivity(MapIntent);
                         ringTone.stop();
                     }
@@ -75,19 +81,24 @@ public class AlertActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
                         alarmManager.cancel(pendingIntent);
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        currentTrip.setTrip_status(false);
+                        presenter.EditTrip(currentTrip);
                         ringTone.stop();
+                        finish();
                     }
                 });
         alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "SNOOZE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-                        NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+                        NotificationCompat.Builder nb = notificationHelper.getChannelNotification(bundle);
                         notificationHelper.getManager().notify(1, nb.build());
+
                         ringTone.stop();
                     }
                 });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 }
