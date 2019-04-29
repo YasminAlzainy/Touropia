@@ -1,4 +1,4 @@
-package iti.mobile.touropia.Registration;
+package iti.mobile.touropia.Screens.Registration;
 
 import android.support.annotation.NonNull;
 

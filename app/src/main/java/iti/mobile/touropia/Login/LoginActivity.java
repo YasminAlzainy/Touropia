@@ -26,8 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import iti.mobile.touropia.R;
-import iti.mobile.touropia.Registration.RegistrationActivity;
-import iti.mobile.touropia.Screens.AddTrip.AddTrip;
+import iti.mobile.touropia.Screens.Registration.RegistrationActivity;
 import iti.mobile.touropia.Screens.Home.HomeActivity;
 import maes.tech.intentanim.CustomIntent;
 

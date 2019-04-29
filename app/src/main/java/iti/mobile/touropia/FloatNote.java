@@ -37,7 +37,7 @@ public class FloatNote extends Service {
                 PixelFormat.TRANSLUCENT);
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        windowManager.addView(floatingView, params);
+//        windowManager.addView(floatingView, params);
 
         expandedView = floatingView.findViewById(R.id.Layout_Expended);
         collapsedView = floatingView.findViewById(R.id.Layout_Collapsed);

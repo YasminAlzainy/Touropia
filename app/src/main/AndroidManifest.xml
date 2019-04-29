@@ -60,7 +60,7 @@
             android:name=".Screens.Map.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".Registration.RegistrationActivity"
+            android:name=".Screens.Registration.RegistrationActivity"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
