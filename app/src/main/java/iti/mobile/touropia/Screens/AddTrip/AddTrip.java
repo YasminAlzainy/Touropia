@@ -504,7 +504,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         args.putInt("requestcode",currentRequestCode);
         intent.putExtra("DATA",args);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, currentRequestCode, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, currentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
     }
