@@ -57,7 +57,7 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
         holder.tripTimeTextView.setText( trip.getTrip_time());
         holder.tripDestinationTextView.setText(trip.getTrip_end_point());
         holder.tripSourceTextView.setText(trip.getTrip_start_point());
-      //  holder.Notes=trip.getTrip_note();
+        holder.Notes=trip.getTrip_note();
         holder.presenter=presenter;
         holder.Position=position;
     }
@@ -76,7 +76,7 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
         private ImageView tripImageView;
         private Button tripMenuButton;
         private Context context;
-        private String Notes;
+        private List<String> Notes;
         private HistoryPresenterImpl presenter;
         private int Position;
         private MyViewHolder(final View view) {
@@ -104,7 +104,7 @@ public class historyTripsAdapter  extends RecyclerView.Adapter<historyTripsAdapt
                                     //Toast.makeText(context, "Notes", Toast.LENGTH_SHORT).show();
                                      Intent intent=new Intent( context, NotesActivity.class);
                                      Bundle bundle=new Bundle();
-                                     bundle.putString("Notes",Notes);
+                                    bundle.putStringArrayList("Notes", (ArrayList<String>) Notes);
                                      bundle.putString("tripName",tripNameTextView.getText().toString());
                                      intent.putExtras(bundle);
                                      context.startActivity(intent);

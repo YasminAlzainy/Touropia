@@ -46,6 +46,8 @@ public class AlertActivity extends AppCompatActivity {
         Double langfrom=currentTrip.getLatLangFrom().getLongitude();
         Double langto=currentTrip.getlatLangTo().getLongitude();
         presenter=new EditPresenterImpl(userId);
+        currentTrip.setTrip_status(false);
+        presenter.EditTrip(currentTrip);
 
 
         try {
@@ -66,8 +68,8 @@ public class AlertActivity extends AppCompatActivity {
                         //Intent MapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps/dir?saddr="+latfrom+","+langfrom+"&daddr="+latTo+","+langto));
                        Intent MapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q="+latTo+","+langto));
                         MapIntent.setPackage("com.google.android.apps.maps");
-                        currentTrip.setTrip_status(false);
-                        presenter.EditTrip(currentTrip);
+                       // currentTrip.setTrip_status(false);
+                        //presenter.EditTrip(currentTrip);
                         AddTrip.requestCode[ bundle.getInt("requestcode")]=0;
                         startActivity(MapIntent);
                         ringTone.stop();
@@ -81,8 +83,8 @@ public class AlertActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), bundle.getInt("requestcode"), intent, 0);
                         AddTrip.requestCode[ bundle.getInt("requestcode")]=0;
-                        currentTrip.setTrip_status(false);
-                        presenter.EditTrip(currentTrip);
+                        //currentTrip.setTrip_status(false);
+                        //presenter.EditTrip(currentTrip);
                         ringTone.stop();
                         alarmManager.cancel(pendingIntent);
                         finish();
@@ -93,10 +95,11 @@ public class AlertActivity extends AppCompatActivity {
         alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "SNOOZE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        //currentTrip.setTrip_status(false);
+                        //presenter.EditTrip(currentTrip);
                         NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
                         NotificationCompat.Builder nb = notificationHelper.getChannelNotification(bundle);
                         notificationHelper.getManager().notify(1, nb.build());
-
                         ringTone.stop();
                     }
                 });

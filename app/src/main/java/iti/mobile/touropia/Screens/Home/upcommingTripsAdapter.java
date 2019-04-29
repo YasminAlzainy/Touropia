@@ -23,6 +23,7 @@ import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iti.mobile.touropia.Screens.Notes.NotesActivity;
@@ -59,7 +60,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
         holder.tripSourceTextView.setText( trip.getTrip_start_point());
         holder.presenter=this.presenter;
         holder.Position=position;
-      //  holder.Notes=trip.getTrip_note();
+        holder.Notes=trip.getTrip_note();
         holder.source=trip.getLatLangFrom();
         holder.Destination=trip.getlatLangTo();
         holder.trip=trip;
@@ -84,7 +85,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
         public ImageView tripImageView;
         public Button tripMenuButton;
         private Context context;
-        private String Notes;
+        private List<String> Notes;
         private HomePresenterImpl presenter;
         private int Position;
         private LatLng source;
@@ -127,7 +128,7 @@ public class upcommingTripsAdapter  extends RecyclerView.Adapter<upcommingTripsA
                                 case R.id.Notes:
                                     Intent intent=new Intent( context, NotesActivity.class);
                                     Bundle bundle=new Bundle();
-                                    bundle.putString("Notes",Notes);
+                                    bundle.putStringArrayList("Notes", (ArrayList<String>) Notes);
                                     bundle.putString("tripName",tripNameTextView.getText().toString());
                                     intent.putExtras(bundle);
                                     context.startActivity(intent);
