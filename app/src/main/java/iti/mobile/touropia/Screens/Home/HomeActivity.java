@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import iti.mobile.touropia.FloatNote;
+import iti.mobile.touropia.Login.LoginActivity;
 import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
@@ -82,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContact.HomeV
                     editor.putBoolean("firstTime", true);
                     editor.commit();
                     finish();
-
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     //Toast.makeText(HomeActivity.this, "Good Bye ^_^ ", Toast.LENGTH_SHORT).show();
                 }
                 return true;
