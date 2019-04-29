@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Screens.Alert.AlertActivity" android:theme="@style/AppTheme.AlarmTheme"/>
+        <activity android:name=".Screens.Alert.AlertActivity"
+            android:theme="@style/AppTheme.AlarmTheme"
+            android:noHistory="true"/>
         <activity
             android:name=".Screens.SplashScreen.SpalshScreen"
             android:screenOrientation="portrait"
@@ -34,16 +36,20 @@
         </activity>
         <activity
             android:name=".Screens.Notes.NotesActivity"
-            android:theme="@style/AppTheme.CustomTheme" />
+            android:theme="@style/AppTheme.CustomTheme"
+            android:noHistory="true"/>
         <activity
             android:name=".Screens.AddTrip.AddTrip"
-            android:label="Add Trip" />
+            android:label="Add Trip"
+            android:noHistory="true" />
         <activity
             android:name=".Screens.History.HistoryActivity"
-            android:label="@string/HistoryTrips" />
+            android:label="@string/HistoryTrips"
+            android:noHistory="true"/>
         <activity
             android:name=".Screens.Home.HomeActivity"
-            android:label="@string/UpcommingTrips"></activity>
+            android:label="@string/UpcommingTrips"
+            ></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -58,7 +64,8 @@
 
         <activity
             android:name=".Screens.Map.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps"
+            android:noHistory="true"></activity>
         <activity
             android:name=".Screens.Registration.RegistrationActivity"
             android:noHistory="true"
@@ -67,7 +74,8 @@
             android:name=".Login.LoginActivity"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity android:name=".Screens.EditTrip.EditTripActivity" />
+        <activity android:name=".Screens.EditTrip.EditTripActivity"
+            android:noHistory="true"/>
 
         <service
             android:name=".FloatNote"

@@ -3,9 +3,12 @@ package iti.mobile.touropia.Screens.Alert;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import iti.mobile.touropia.R;
@@ -39,10 +42,16 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification() {
+    public NotificationCompat.Builder getChannelNotification(Bundle bundle) {
+        Intent AlertIntent=new Intent(this,AlertActivity.class);
+        AlertIntent.putExtra("MYBundle",bundle);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,1,AlertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Trip")
                 .setContentText("Don't forget about your Trip today.")
-                .setSmallIcon(R.drawable.ic_launcher_background);  //need notification Image
+                .setSmallIcon(R.drawable.alarm)
+                .setContentIntent(pendingIntent);  //need notification Image
+
+
     }
 }

@@ -348,7 +348,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/addtrip_button"
-                android:onClick="EditTrip"
+                android:onClick="EditInsertedTrip"
                 android:text="Edit Trip "
                 android:textColor="@color/white" />
         </LinearLayout>

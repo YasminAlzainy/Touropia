@@ -362,7 +362,7 @@ public class EditTripActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public void EditTrip(View view) {
+    public void EditInsertedTrip(View view) {
 
         if (roundTrip) {
             if (ValidateDataRound()) {

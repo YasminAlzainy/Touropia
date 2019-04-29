@@ -31,9 +31,12 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import iti.mobile.touropia.Screens.Alert.AlertReceiver;
 import iti.mobile.touropia.Model.Network.FirebaseConnection;
@@ -77,6 +80,9 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private int mYearBack, mMonthBack, mDayBack, mHourBack, mMinuteBack;
+    //aya
+    public static Integer requestCode []={0,0,0,0,0,0,0,0,0,0};  //for limited number of alarms in the same time
+    private int currentRequestCode=10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,20 +329,38 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             if (ValidateDataRound()) {
 
                 String id = mDatabase.push().getKey();
+
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
-
-                mDatabase.child(id).setValue(tripDTO);
-                mDatabase.child(id + 1).setValue(tripDTOBack);
+                getRequestCode();   //aya
                 //aya Alarm Manager
-                startAlarm(myCalendar);
-                startAlarm(myCalendarBack);
+
+                if(currentRequestCode!=10) {
+                    mDatabase.child(id).setValue(tripDTO);
+                    tripDTO.setKey(id); //aya
+                    startAlarm(myCalendar,false);
+                    currentRequestCode = 10;
+                    getRequestCode();
+                    if(currentRequestCode!=10) {
+                        mDatabase.child(id + 1).setValue(tripDTOBack);
+                        tripDTOBack.setKey(id+1);  //aya
+                        startAlarm(myCalendarBack,true);
+                        currentRequestCode = 10;
+                    }else{
+                        Toast.makeText(this, "reached Trip Limit can't add back trip", Toast.LENGTH_SHORT).show();
+                    }
 
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                Bundle bundle = new Bundle(); //aya
+                bundle.putString("userId", userId); //aya
+                intent.putExtras(bundle); //aya
                 startActivity(intent);
                 CustomIntent.customType(this, "right-to-left");
+                }else{
+                    Toast.makeText(this, "reached Trip Limit", Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 Toast.makeText(this, "enter round method", Toast.LENGTH_SHORT).show();
@@ -347,12 +371,16 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
             if (ValidateData()) {
 
                 String id = mDatabase.push().getKey();
+
                 FirebaseDatabase database = FirebaseConnection.getConnection();
                 mDatabase = database.getReference("trips").child(userId);
+                getRequestCode();
+                if(currentRequestCode!=10){ //aya
                 mDatabase.child(id).setValue(tripDTO);
                 //aya Alarm Manager
-                startAlarm(myCalendar);
-
+                tripDTO.setKey(id); //aya
+                startAlarm(myCalendar,false);
+                currentRequestCode=10;
                 Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddTrip.this, HomeActivity.class);
                 Bundle bundle = new Bundle();
@@ -360,6 +388,10 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 intent.putExtras(bundle);
                 startActivity(intent);
                 CustomIntent.customType(this, "right-to-left");
+                }else{
+                    Toast.makeText(this, "reached Trip Limit", Toast.LENGTH_SHORT).show();
+            }
+
 
             } else {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
@@ -458,28 +490,37 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm(Calendar c,boolean flagBack) {
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
+        Bundle args = new Bundle();
+        if(flagBack) {
+            args.putSerializable("obj", (Serializable) tripDTOBack);
+        }else{
+            args.putSerializable("obj", (Serializable) tripDTO);
+        }
+        args.putString("userId",userId);
+        args.putInt("requestcode",currentRequestCode);
+        intent.putExtra("DATA",args);
 
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("AlertTrip",tripDTO);
-        bundle.putString("userId",userId);
-        bundle.putDouble("latitudeFrom",tripDTO.getLatLangFrom().getLatitude());
-        bundle.putDouble("latitudeTo",tripDTO.getlatLangTo().getLatitude());
-        bundle.putDouble("langFrom",tripDTO.getLatLangFrom().getLongitude());
-        bundle.putDouble("langTo",tripDTO.getlatLangTo().getLongitude());
-
-        intent.putExtras(bundle);
-
-        // intent.putExtra("AlertTrip",tripDTO);
-        //System.out.println("Latitiude in add "+tripDTO.getLatLangFrom().getLatitude());
-        //intent.putExtra("userId",userId);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, currentRequestCode, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
     }
+
+
+    //to get Request Code for each alarm
+    private void getRequestCode(){
+        for(int i=0;i<requestCode.length;i++){
+            if(requestCode[i]!=1){
+                currentRequestCode=i;
+                requestCode[i]=1;
+                break;
+            }
+        }
+    }
+
 
 
 }
