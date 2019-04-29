@@ -11,12 +11,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
+import iti.mobile.touropia.Model.Network.TripDTO;
 import iti.mobile.touropia.R;
 
 
 public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
+    public TripDTO currentTrip;
 
     private NotificationManager mManager;
 
@@ -45,9 +47,10 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationCompat.Builder getChannelNotification(Bundle bundle) {
         Intent AlertIntent=new Intent(this,AlertActivity.class);
         AlertIntent.putExtra("MYBundle",bundle);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,1,AlertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        currentTrip  = (TripDTO) bundle.getSerializable("obj");
+        PendingIntent pendingIntent=PendingIntent.getActivity(this, bundle.getInt("requestcode"),AlertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Trip")
+                .setContentTitle("Trip:"+currentTrip.getTrip_name())
                 .setContentText("Don't forget about your Trip today.")
                 .setSmallIcon(R.drawable.alarm)
                 .setContentIntent(pendingIntent);  //need notification Image

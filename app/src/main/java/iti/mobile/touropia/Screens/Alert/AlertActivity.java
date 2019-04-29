@@ -80,12 +80,14 @@ public class AlertActivity extends AppCompatActivity {
                         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), bundle.getInt("requestcode"), intent, 0);
-                        alarmManager.cancel(pendingIntent);
-                        //dialog.dismiss();
+                        AddTrip.requestCode[ bundle.getInt("requestcode")]=0;
                         currentTrip.setTrip_status(false);
                         presenter.EditTrip(currentTrip);
                         ringTone.stop();
+                        alarmManager.cancel(pendingIntent);
                         finish();
+                        dialog.cancel();
+
                     }
                 });
         alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "SNOOZE",
