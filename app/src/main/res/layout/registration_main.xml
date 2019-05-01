@@ -3,26 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ECF0F1">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ECF0F1"
         tools:context=".Screens.Registration.RegistrationActivity">
 
-        <TextView
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="110dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="100dp"
+            android:src="@drawable/logo"
 
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="TOUROPIA\nRegistration"
-            android:textColor="@color/black"
-            android:textSize="45dp"
-            android:textStyle="italic" />
+            />
 
 
         <RelativeLayout
@@ -39,7 +38,7 @@
                 android:layout_height="40dp"
                 android:background="@color/icons"
                 android:padding="8dp"
-                android:src="@drawable/img_user"
+                android:src="@drawable/email"
                 android:tint="@color/white" />
 
             <EditText
@@ -60,11 +59,48 @@
 
         </RelativeLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginRight="30dp">
+
+            <ImageView
+                android:id="@+id/imageView_"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/icons"
+                android:padding="8dp"
+                android:src="@drawable/img_user"
+                android:tint="@color/white" />
+
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView_"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="-8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toRightOf="@+id/imageView_"
+                android:background="@drawable/text"
+                android:hint="name"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayout1"
+            android:layout_below="@+id/relativeLayout3"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="43dp"
             android:layout_marginRight="30dp">

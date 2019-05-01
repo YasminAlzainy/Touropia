@@ -350,14 +350,14 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                         Toast.makeText(this, "reached Trip Limit can't add back trip", Toast.LENGTH_SHORT).show();
                     }
 
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
-                Bundle bundle = new Bundle(); //aya
-                bundle.putString("userId", userId); //aya
-                intent.putExtras(bundle); //aya
-                startActivity(intent);
-                CustomIntent.customType(this, "right-to-left");
+                    Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                    Bundle bundle = new Bundle(); //aya
+                    bundle.putString("userId", userId); //aya
+                    intent.putExtras(bundle); //aya
+                    startActivity(intent);
+                    CustomIntent.customType(this, "right-to-left");
                 }else{
                     Toast.makeText(this, "reached Trip Limit", Toast.LENGTH_SHORT).show();
                 }
@@ -376,21 +376,21 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
                 mDatabase = database.getReference("trips").child(userId);
                 getRequestCode();
                 if(currentRequestCode!=10){ //aya
-                mDatabase.child(id).setValue(tripDTO);
-                //aya Alarm Manager
-                tripDTO.setKey(id); //aya
-                startAlarm(myCalendar,false);
-                currentRequestCode=10;
-                Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddTrip.this, HomeActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("userId", userId);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                CustomIntent.customType(this, "right-to-left");
+                    mDatabase.child(id).setValue(tripDTO);
+                    //aya Alarm Manager
+                    tripDTO.setKey(id); //aya
+                    startAlarm(myCalendar,false);
+                    currentRequestCode=10;
+                    Toast.makeText(this, " Your Trip saved ", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddTrip.this, HomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userId", userId);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    CustomIntent.customType(this, "right-to-left");
                 }else{
                     Toast.makeText(this, "reached Trip Limit", Toast.LENGTH_SHORT).show();
-            }
+                }
 
 
             } else {
@@ -504,7 +504,7 @@ public class AddTrip extends AppCompatActivity implements AdapterView.OnItemSele
         args.putInt("requestcode",currentRequestCode);
         intent.putExtra("DATA",args);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, currentRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, currentRequestCode, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
     }

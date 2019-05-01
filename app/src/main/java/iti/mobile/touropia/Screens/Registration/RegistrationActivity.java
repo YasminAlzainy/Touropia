@@ -21,8 +21,8 @@ import maes.tech.intentanim.CustomIntent;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationContract.RegistrationnView {
 
-    EditText edtemailregister, edtpasswordregister;
-    String email, password;
+    EditText edtemailregister, edtpasswordregister, edtName;
+    String email, password, name;
     private FirebaseAuth mAuth;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -40,6 +40,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         mAuth = FirebaseAuth.getInstance();
         edtemailregister = (EditText) findViewById(R.id.edtemailregister);
         edtpasswordregister = (EditText) findViewById(R.id.edtpasswordregister);
+        edtName = (EditText) findViewById(R.id.edtName);
     }
 
     public void registeruser(View view) {
@@ -58,11 +59,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     void registerUser() {
         email = edtemailregister.getText().toString();
         password = edtpasswordregister.getText().toString();
-        if (email.length() > 0 && password.length() > 0) {
+        name = edtName.getText().toString();
+        if (email.length() > 0 && password.length() > 0 && name.length() > 0) {
 
             presenter.checkRegistration(email, password, mAuth);
         } else {
-            Toast.makeText(this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -77,6 +79,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userId", mAuth.getCurrentUser().getUid());
+        bundle.putString("userName", name);
         intent.putExtras(bundle);
         editor = sharedPreferences.edit();
         editor.putBoolean("firstTime", false);
